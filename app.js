@@ -1,29 +1,11 @@
-const SUPABASE_URL = 'https://VOTRE-PROJET.supabase.co'
-const SUP.signUp({const SUPABASE_PUBLISHABLE_KEY = 'VOTRE_PUBLISHABLE_KEY'
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}${window.location.pathname.replace(/[^/]+$/, 'auth.html')}`
-      }
-    })
+const SUPABASE_URL = 'https://VOTRE-PROJET.supabase.co'const SUPABASE_URL')?.value
 
-    message.textContent = error
-      ? `Erreur : ${error.message}`
-      : 'Compte créé. Vérifiez votre boîte mail si une confirmation est demandée.'
-  })
-}
+    setMessage('login-message', '')
 
-// -----------------------------
-// CONNEXION
-// -----------------------------
-const loginForm = document.getElementById('login-form')
-if (loginForm) {
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault()
-
-    const email = document.getElementById('login-email').value.trim()
-    const password = document.getElementById('login-password').value
-    const message = document.getElementById('login-message')
+    if (!email || !password) {
+      setMessage('login-message', 'Merci de remplir tous les champs.', true)
+      return
+    }
 
     const { error } = await sb.auth.signInWithPassword({
       email,
@@ -31,49 +13,79 @@ if (loginForm) {
     })
 
     if (error) {
-      message.textContent = `Erreur : ${error.message}`
+      setMessage('login-message', `Erreur : ${error.message}`, true)
       return
     }
 
-    message.textContent = 'Connexion réussie.'
+    setMessage('login-message', 'Connexion réussie.')
     window.location.href = 'index.html'
   })
 }
 
-// -----------------------------
-// MOT DE PASSE OUBLIÉ
-// -----------------------------
+// ---------------------------------
+// Mot de passe oublié
+// ---------------------------------
 const forgotForm = document.getElementById('forgot-form')
+
 if (forgotForm) {
   forgotForm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    const email = document.getElementById('forgot-email').value.trim()
-    const message = document.getElementById('forgot-message')
+    const email = document.getElementById('forgot-email')?.value.trim()
+
+    setMessage('forgot-message', '')
+
+    if (!email) {
+      setMessage('forgot-message', 'Merci de saisir une adresse mail.', true)
+      return
+    }
 
     const { error } = await sb.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}${window.location.pathname.replace(/[^/]+$/, 'auth.html')}`
+      redirectTo: buildAuthRedirectUrl()
     })
 
-    message.textContent = error
-      ? `Erreur : ${error.message}`
-      : 'Si cette adresse existe, un lien de réinitialisation a été envoyé.'
+    if (error) {
+      setMessage('forgot-message', `Erreur : ${error.message}`, true)
+      return
+    }
+
+    setMessage(
+      'forgot-message',
+      'Si cette adresse existe, un lien de réinitialisation a été envoyé.'
+    )
+
+    forgotForm.reset()
   })
 }
 
-// -----------------------------
-// MISE À JOUR DU MOT DE PASSE
-// -----------------------------
+// ---------------------------------
+// Mise à jour du mot de passe
+// ---------------------------------
 const updatePasswordForm = document.getElementById('update-password-form')
+
 if (updatePasswordForm) {
   updatePasswordForm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    const newPassword = document.getElementById('new-password').value
-    const message = document.getElementById('update-password-message')
+    const newPassword = document.getElementById('new-password')?.value
+
+    setMessage('update-password-message', '')
+
+    if (!newPassword) {
+      setMessage(
+        'update-password-message',
+        'Merci de saisir un nouveau mot de passe.',
+        true
+      )
+      return
+    }
 
     if (!passwordRecoveryMode) {
-      message.textContent = 'Le lien de réinitialisation n’a pas été détecté.'
+      setMessage(
+        'update-password-message',
+        'Le lien de réinitialisation n’a pas été détecté. Revenez au mail reçu et recliquez sur le lien.',
+        true
+      )
       return
     }
 
@@ -82,13 +94,20 @@ if (updatePasswordForm) {
     })
 
     if (error) {
-      message.textContent = `Erreur : ${error.message}`
+      setMessage('update-password-message', `Erreur : ${error.message}`, true)
       return
     }
 
-    message.textContent = 'Mot de passe mis à jour. Vous pouvez maintenant vous connecter.'
+    setMessage(
+      'update-password-message',
+      'Mot de passe mis à jour. Vous pouvez maintenant vous connecter.'
+    )
+
+    updatePasswordForm.reset()
+    passwordRecoveryMode = false
   })
 }
+const SUPABASE_PUBLISHABLE_KEY = 'VOTRE_PUBLISHABLE_KEY'
 
 const { createClient } = supabase
 const sb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
@@ -96,28 +115,97 @@ window.sb = sb
 
 let passwordRecoveryMode = false
 
-// Détection du mode récupération de mot de passe
-sb.auth.onAuthStateChange((event) => {
+function setMessage(elementId, text, isError = false) {
+  const el = document.getElementById(elementId)
+  if (!el) return
+
+  el.textContent = text
+  el.style.color = isError ? '#b91c1c' : '#475569'
+}
+
+function buildAuthRedirectUrl() {
+  const url = new URL(window.location.href)
+  url.pathname = url.pathname.replace(/[^/]+$/, 'auth.html')
+  url.hash = ''
+  return url.toString()
+}
+
+function showPasswordRecoveryBlock() {
+  const bloc = document.getElementById('update-password-bloc')
+  if (!bloc) return
+
+  bloc.style.display = 'block'
+  bloc.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+// ---------------------------------
+// Événements d'authentification
+// ---------------------------------
+sb.auth.onAuthStateChange((event, session) => {
+  console.log('Auth event:', event, session)
+
   if (event === 'PASSWORD_RECOVERY') {
     passwordRecoveryMode = true
+    showPasswordRecoveryBlock()
+    setMessage(
+      'update-password-message',
+      'Vous pouvez maintenant définir un nouveau mot de passe.'
+    )
+  }
 
-    const bloc = document.getElementById('update-password-bloc')
-    if (bloc) {
-      bloc.style.display = 'block'
-      bloc.scrollIntoView({ behavior: 'smooth' })
-    }
+  if (event === 'SIGNED_OUT') {
+    passwordRecoveryMode = false
   }
 })
 
-// -----------------------------
-// INSCRIPTION
-// -----------------------------
+// ---------------------------------
+// Inscription
+// ---------------------------------
 const signupForm = document.getElementById('signup-form')
+
 if (signupForm) {
   signupForm.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    const email = document.getElementById('signup-email').value.trim()
-    const password = document.getElementById('signup-password').value
-    const message = document.getElementById('signup-message')
+    const email = document.getElementById('signup-email')?.value.trim()
+    const password = document.getElementById('signup-password')?.value
 
+    setMessage('signup-message', '')
+
+    if (!email || !password) {
+      setMessage('signup-message', 'Merci de remplir tous les champs.', true)
+      return
+    }
+
+    const { error } = await sb.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: buildAuthRedirectUrl()
+      }
+    })
+
+    if (error) {
+      setMessage('signup-message', `Erreur : ${error.message}`, true)
+      return
+    }
+
+    setMessage(
+      'signup-message',
+      'Compte créé. Vérifiez votre boîte mail si une confirmation est demandée.'
+    )
+
+    signupForm.reset()
+  })
+}
+
+// ---------------------------------
+// Connexion
+// ---------------------------------
+const loginForm = document.getElementById('login-form')
+
+if (loginForm) {
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const email = document.getElementById('login-email')?.value.trim()
