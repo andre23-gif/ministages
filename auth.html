@@ -1,6 +1,89 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head      .auth-grid {<head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accès à l’application</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .auth-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .auth-bloc {
+      background: var(--blanc);
+      border: 1px solid var(--bordure);
+      border-radius: var(--rayon);
+      padding: 24px;
+      box-shadow: var(--ombre);
+    }
+
+    .auth-bloc h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--bleu-fonce);
+    }
+
+    .auth-bloc p {
+      margin: 0 0 12px 0;
+    }
+
+    .auth-bloc form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .auth-bloc label {
+      display: inline-block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      color: var(--bleu-fonce);
+    }
+
+    .auth-bloc input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--bordure);
+      border-radius: 14px;
+      font-size: 1rem;
+      background: var(--blanc);
+      color: var(--texte);
+      box-sizing: border-box;
+    }
+
+    .auth-bloc input:focus {
+      outline: none;
+      border-color: var(--bleu);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .auth-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .auth-message {
+      min-height: 24px;
+      font-size: 0.95rem;
+      color: var(--texte-secondaire);
+      line-height: 1.4;
+    }
+
+    .bloc-large {
+      grid-column: 1 / -1;
+    }
+
+    #update-password-bloc {
+      display: none;
+      border-left: 8px solid var(--jaune);
+    }
+
+    @media (max-width: 900px) {
+      .auth-grid {
         grid-template-columns: 1fr;
       }
 
@@ -18,6 +101,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Accès à l’application</h1>
@@ -108,13 +192,6 @@
           <p id="update-password-message" class="auth-message"></p>
         </article>
       </div>
-
-      <div class="liens-rapides">
-        <a class="lien-bouton" href="index.html">Retour à l’accueil</a>
-        <a class="lien-bouton" href="saisie.html">Aller à la saisie</a>
-        <a class="lien-bouton" href="recap.html">Voir le récapitulatif</a>
-        <a class="lien-bouton" href="config.html">Ouvrir la configuration</a>
-      </div>
     </section>
   </main>
 
@@ -126,106 +203,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Accès à l’application</title>
-  <link rel="stylesheet" href="style.css">
-
-  <style>
-    .auth-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(280px, 1fr));
-      gap: 20px;
-    }
-
-    .auth-bloc {
-      background: var(--blanc);
-      border: 1px solid var(--bordure);
-      border-radius: var(--rayon);
-      padding: 24px;
-      box-shadow: var(--ombre);
-    }
-
-    .auth-bloc h2 {
-      margin-top: 0;
-      margin-bottom: 14px;
-      color: var(--bleu-fonce);
-    }
-
-    .auth-bloc p {
-      margin: 0 0 12px 0;
-    }
-
-    .auth-bloc form {
-      display: grid;
-      gap: 12px;
-    }
-
-    .auth-bloc label {
-      display: inline-block;
-      margin-bottom: 6px;
-      font-weight: 700;
-      color: var(--bleu-fonce);
-    }
-
-    .auth-bloc input {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--bordure);
-      border-radius: 14px;
-      font-size: 1rem;
-      background: var(--blanc);
-      color: var(--texte);
-      box-sizing: border-box;
-    }
-
-    .auth-bloc input:focus {
-      outline: none;
-      border-color: var(--bleu);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-    }
-
-    .auth-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .auth-message {
-      min-height: 24px;
-      font-size: 0.95rem;
-      color: var(--texte-secondaire);
-      line-height: 1.4;
-    }
-
-    .bloc-large {
-      grid-column: 1 / -1;
-    }
-
-    #update-password-bloc {
-      display: none;
-      border-left: 8px solid var(--jaune);
-    }
-
-    .liens-rapides {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .lien-bouton {
-      display: inline-block;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: #e2e8f0;
-      color: var(--texte);
-      text-decoration: none;
-      font-weight: 700;
-    }
-
-    .lien-bouton:hover {
-      opacity: 0.95;
-    }
-
-    @media (max-width: 900px) {
