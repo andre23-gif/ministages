@@ -1,6 +1,48 @@
 <!DOCTYPE html>
-<html lang="fr">
- <head>
+<html lang);<html lang="fr">
+      border: 1px solid var(--bordure);
+      border-radius: var(--rayon);
+      padding: 24px;
+      box-shadow: var(--ombre);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-text {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .header-user {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .header-user p {
+      margin: 0;
+      color: white;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .header-user button {
+      margin: 0;
+    }
+
+    .config-bloc h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: var(--bleu-fonce);
+      font-size: 1.2rem;
     }
 
     .config-form {
@@ -190,7 +232,7 @@
       </form>
 
       <p class="info-aide">
-        Cette zone servira à créer une formation et à lui associer un lieu.
+        Cette zone sert à créer une formation et à lui associer un lieu.
       </p>
     </section>
 
@@ -333,3 +375,23 @@
   <script src="app.js"></script>
 </body>
 </html>
+``
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#2563eb" />
+
+  <style>
+    .config-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .config-bloc {
