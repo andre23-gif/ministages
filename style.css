@@ -270,10 +270,7 @@ form button[type="button"] {
 }
 
 /* Certains champs en pleine largeur pour plus de confort */
-p:has(#lieu),
-p:has(#formation),
-p:has(#etat_convention),
-p:has(#presence_stage) {
+form p.large {
   grid-column: span 2;
 }
 
@@ -283,12 +280,9 @@ p:has(#presence_stage) {
     grid-template-columns: 1fr;
   }
 
-  p:has(#lieu),
-  p:has(#formation),
-  p:has(#etat_convention),
-  p:has(#presence_stage) {
-    grid-column: span 1;
-  }
+  form p.large {
+  grid-column: span 1;
+}
 
   form p:last-child {
     grid-column: span 1;
