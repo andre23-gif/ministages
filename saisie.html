@@ -1,53 +1,129 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-Enregistrez un mini-stage pour un élève de 3ème :  <meta charset="UTF-8" />
-      classe, identité, date, horaires, lieu, formation,
-      état de la convention et présence au stage.
-    </p>
-  </header>
+ white;<head>
+      font-weight: 600;
+      text-align: right;
+    }
 
-         <p>
-          <button type="submit">Enregistrer</button>
-          <button type="button" onclick="window.location.href='index.html'">Retour à l'accueil</button>
-        </p>
-      </form>
-    </section>
-  </main>
+    .header-user button {
+      margin: 0;
+    }
 
-  <footer>
-    <p>Application de suivi interne – mini-stages 3ème</p>
-  </footer>
-      <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js"></script>
-</body>
-</html>
+    .page-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 18px 20px;
+      align-items: end;
+    }
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saisie d'un mini-stage</title>
-  <link rel="stylesheet" href="style.css">
+    .page-form p {
+      margin: 0;
+    }
+
+    .page-form label {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--bleu-fonce);
+      font-size: 0.98rem;
+    }
+
+    .page-form input,
+    .page-form select {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--bordure);
+      border-radius: 14px;
+      font-size: 1rem;
+      color: var(--texte);
+      background: var(--blanc);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+      box-sizing: border-box;
+    }
+
+    .page-form input:focus,
+    .page-form select:focus {
+      outline: none;
+      border-color: var(--bleu);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .page-form .large {
+      grid-column: 1 / -1;
+    }
+
+    .form-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .form-actions button {
+      margin: 0;
+    }
+
+    @media (max-width: 800px) {
+      .page-form {
+        grid-template-columns: 1fr;
+      }
+
+      .page-form .large,
+      .form-actions {
+        grid-column: auto;
+      }
+
+      .header-top {
+        flex-direction: column;
+      }
+
+      .header-user {
+        align-items: flex-start;
+      }
+
+      .header-user p {
+        text-align: left;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .form-actions button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header>
-
-<p>
-  Connecté : <strong id="user-email"></strong>
-</p>
-<p>
-  <button type="button" onclick="logoutUser()">Déconnexion</button>
-</p>
-        
-    <h1>Saisie d’un mini-stage</h1>
-    <p>
-          <input type="text" id="nom" name="nom" placeholder="Nom de l'élève">
-        </p>
-
+    <div class="header-top">
+      <div class="header-text">
+        <h1>Saisie d’un mini-stage</h1>
         <p>
-          <label for="prenom">Prénom</label><br>
-          <input type="text" id="prenom" name="prenom" placeholder="Prénom de l'élève">
+          Enregistrez un mini-stage pour un élève de 3ème :
+          classe, identité, date, horaires, lieu, formation,
+          état de la convention et présence au stage.
         </p>
+      </div>
 
-<p>
+      <div class="header-user">
+        <p>Connecté : <strong id="user-email"></strong></p>
+        <button type="button" onclick="logoutUser()">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <h2>Nouvelle fiche élève</h2>
+
+      <form class="page-form">
+        <p>
           <label for="classe">Classe</label><br>
           <select id="classe" name="classe">
             <option value="">Choisir une classe</option>
@@ -60,10 +136,11 @@ Enregistrez un mini-stage pour un élève de 3ème :  <meta charset="UTF-8" />
             <option>3°7</option>
           </select>
         </p>
-        
+
         <p>
           <label for="semaine">Semaine</label><br>
           <select id="semaine" name="semaine">
+            <option value="">Choisir une semaine</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -120,6 +197,16 @@ Enregistrez un mini-stage pour un élève de 3ème :  <meta charset="UTF-8" />
         </p>
 
         <p>
+          <label for="nom">Nom</label><br>
+          <input type="text" id="nom" name="nom" placeholder="Nom de l'élève">
+        </p>
+
+        <p>
+          <label for="prenom">Prénom</label><br>
+          <input type="text" id="prenom" name="prenom" placeholder="Prénom de l'élève">
+        </p>
+
+        <p>
           <label for="date_stage">Date</label><br>
           <input type="date" id="date_stage" name="date_stage">
         </p>
@@ -134,23 +221,84 @@ Enregistrez un mini-stage pour un élève de 3ème :  <meta charset="UTF-8" />
           <input type="time" id="heure_fin" name="heure_fin">
         </p>
 
-        <p>
+        <p class="large">
           <label for="lieu">Lieu</label><br>
           <select id="lieu" name="lieu">
-            <option>À compléter plus tard depuis Supabase</option>
+            <option value="">Choisir un lieu</option>
           </select>
         </p>
 
-        <p>
+        <p class="large">
           <label for="formation">Formation</label><br>
           <select id="formation" name="formation">
-            <option>À compléter plus tard depuis Supabase</option>
+            <option value="">Choisir une formation</option>
           </select>
         </p>
 
-        <p>
+        <p class="large">
           <label for="etat_convention">État de la convention</label><br>
           <select id="etat_convention" name="etat_convention">
             <option>?</option>
             <option>Accord famille</option>
             <option>Conventions distribuées</option>
+            <option>Conventions signées</option>
+            <option>Conventions expédiées</option>
+            <option>Dates bloquées</option>
+          </select>
+        </p>
+
+        <p class="large">
+          <label for="presence_stage">Présence au stage</label><br>
+          <select id="presence_stage" name="presence_stage">
+            <option>?</option>
+            <option>Absence au stage</option>
+            <option>Présent au stage</option>
+            <option>Stage reprogrammé</option>
+          </select>
+        </p>
+
+        <div class="form-actions">
+          <button type="submit">Enregistrer</button>
+          <button type="button" onclick="window.location.href='index.html'">Retour à l’accueil</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Application de suivi interne – mini-stages 3ème</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saisie d'un mini-stage</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-text {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .header-user {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .header-user p {
+      margin: 0;
