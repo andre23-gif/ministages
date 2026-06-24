@@ -235,4 +235,100 @@ if (updatePasswordForm) {
   })
 }
 
+const COULEURS_PAR_LIBELLE = {
+  Bleu: '#2563eb',
+  error.message)  Jaune: '#f59e0b',
+    return
+  }
+
+  data.forEach((ligne) => {
+    if (ligne.nom && ligne.couleur) {
+      appliquerCouleurDansUI(ligne.nom, ligne.couleur)
+    }
+  })
+}
+
+async function enregistrerCouleurClasse(classe, libelleCouleur) {
+  const couleurHex = COULEURS_PAR_LIBELLE[libelleCouleur]
+  if (!couleurHex) return
+
+  const { error } = await sb
+    .from('classes')
+    .update({ couleur: couleurHex })
+    .eq('nom', classe)
+
+  if (error) {
+    console.error(`Erreur enregistrement couleur pour ${classe} :`, error.message)
+    return
+  }
+
+  appliquerCouleurDansUI(classe, couleurHex)
+}
+
+function initialiserCouleursConfig() {
+  if (currentPageName() !== 'config.html') return
+
+  const selects = document.querySelectorAll('.classes-couleurs select[data-classe]')
+
+  selects.forEach((select) => {
+    select.addEventListener('change', async () => {
+      const classe = select.dataset.classe
+      const libelleCouleur = select.value
+      await enregistrerCouleurClasse(classe, libelleCouleur)
+    })
+  })
+
+  chargerCouleursClasses()
+}
+
+function updateCouleurPastille(selectElement, pastilleId) {
+  const couleurHex = COULEURS_PAR_LIBELLE[selectElement.value] || '#94a3b8'
+  const pastille = document.getElementById(pastilleId)
+  if (!pastille) return
+  pastille.style.background = couleurHex
+}
+
+initialiserCouleursConfig()
+  Vert: '#16a34a',
+  Rouge: '#ef4444',
+  Violet: '#a855f7',
+  Orange: '#f97316',
+  Cyan: '#0ea5e9'
+}
+
+function libelleDepuisCouleur(hex) {
+  const entree = Object.entries(COULEURS_PAR_LIBELLE).find(
+    ([, valeur]) => valeur.toLowerCase() === String(hex || '').toLowerCase()
+  )
+  return entree ? entree[0] : null
+}
+
+function pastilleIdDepuisClasse(classe) {
+  return `pastille-${classe.replace('°', '-').replace(/\s+/g, '').replace(/\./g, '')}`
+}
+
+function appliquerCouleurDansUI(classe, couleurHex) {
+  const select = document.querySelector(`.classes-couleurs select[data-classe="${classe}"]`)
+  const pastille = document.getElementById(pastilleIdDepuisClasse(classe))
+
+  if (pastille) {
+    pastille.style.background = couleurHex
+  }
+
+  const libelle = libelleDepuisCouleur(couleurHex)
+  if (select && libelle) {
+    select.value = libelle
+  }
+}
+
+async function chargerCouleursClasses() {
+  if (currentPageName() !== 'config.html') return
+
+  const { data, error } = await sb
+    .from('classes')
+    .select('nom, couleur')
+
+  if (error) {
+
+
 protectCurrentPage()
