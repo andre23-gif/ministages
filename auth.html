@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang: 0;<html lang="fr">
+      margin-bottom: 14px;
+      color: var(--bleu-fonce);
+    }
+
+    .auth-bloc p {
+      margin: 0 0 12px 0;
+    }
+
+    .auth-bloc form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .auth-bloc label {
+      display: inline-block;
+      margin-bottom: 6px;
+      font-weight: 700;
+      color: var(--bleu-fonce);
+    }
+
+    .auth-bloc input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--bordure);
+      border-radius: 14px;
+      font-size: 1rem;
+      background: var(--blanc);
+      color: var(--texte);
+    }
+
+    .auth-bloc input:focus {
+      outline: none;
+      border-color: var(--bleu);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .auth-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .auth-message {
+      min-height: 24px;
+      font-size: 0.95rem;
+      color: var(--texte-secondaire);
+    }
+
+    .bloc-large {
+      grid-column: 1 / -1;
+    }
+
+    #update-password-bloc {
+      display: none;
+      border-left: 8px solid var(--jaune);
+    }
+
+    .liens-rapides {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .lien-bouton {
+      display: inline-block;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      color: var(--texte);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    @media (max-width: 900px) {
+      .auth-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bloc-large {
+        grid-column: auto;
+      }
+
+      .auth-actions {
+        flex-direction: column;
+      }
+
+      .auth-actions button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Accès à l’application</h1>
+    <p>
+      Connectez-vous, créez un compte ou demandez un nouveau mot de passe depuis cette page unique.
+    </p>
+  </header>
+
+  <main>
+    <section>
+      <div class="auth-grid">
+        <article class="auth-bloc">
+          <h2>Connexion</h2>
+          <form id="login-form">
+            <p>
+              <label for="login-email">Adresse mail</label><br>
+              <input type="email" id="login-email" required>
+            </p>
+
+            <p>
+              <label for="login-password">Mot de passe</label><br>
+              <input type="password" id="login-password" required>
+            </p>
+
+            <div class="auth-actions">
+              <button type="submit">Se connecter</button>
+            </div>
+          </form>
+
+          <p id="login-message" class="auth-message"></p>
+        </article>
+
+        <article class="auth-bloc">
+          <h2>Créer un compte</h2>
+          <form id="signup-form">
+            <p>
+              <label for="signup-email">Adresse mail</label><br>
+              <input type="email" id="signup-email" required>
+            </p>
+
+            <p>
+              <label for="signup-password">Mot de passe</label><br>
+              <input type="password" id="signup-password" required>
+            </p>
+
+            <div class="auth-actions">
+              <button type="submit">Créer mon compte</button>
+            </div>
+          </form>
+
+          <p id="signup-message" class="auth-message"></p>
+        </article>
+
+        <article class="auth-bloc bloc-large">
+          <h2>Mot de passe oublié</h2>
+          <form id="forgot-form">
+            <p>
+              <label for="forgot-email">Adresse mail</label><br>
+              <input type="email" id="forgot-email" required>
+            </p>
+
+            <div class="auth-actions">
+              <button type="submit">Envoyer un lien de réinitialisation</button>
+            </div>
+          </form>
+
+          <p id="forgot-message" class="auth-message"></p>
+        </article>
+
+        <article class="auth-bloc bloc-large" id="update-password-bloc">
+          <h2>Définir un nouveau mot de passe</h2>
+          <form id="update-password-form">
+            <p>
+              <label for="new-password">Nouveau mot de passe</label><br>
+              <input type="password" id="new-password" required>
+            </p>
+
+            <div class="auth-actions">
+              <button type="submit">Mettre à jour le mot de passe</button>
+            </div>
+          </form>
+
+          <p id="update-password-message" class="auth-message"></p>
+        </article>
+      </div>
+
+      <div class="liens-rapides">
+        <a class="lien-bouton" href="index.html">Retour à l’accueil</a>
+        <a class="lien-bouton" href="saisie.html">Aller à la saisie</a>
+        <a class="lien-bouton" href="recap.html">Voir le récapitulatif</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Application de suivi interne – mini-stages 3ème</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Accès à l’application</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .auth-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .auth-bloc {
+      background: var(--blanc);
+      border: 1px solid var(--bordure);
+      border-radius: var(--rayon);
+      padding: 24px;
+      box-shadow: var(--ombre);
+    }
+
+    .auth-bloc h2 {
