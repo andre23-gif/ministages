@@ -7,6 +7,16 @@ window.sb = sb
 
 let passwordRecoveryMode = false
 
+const COULEURS_PAR_LIBELLE = {
+  Bleu: '#2563eb',
+  Jaune: '#f59e0b',
+  Vert: '#16a34a',
+  Rouge: '#ef4444',
+  Violet: '#a855f7',
+  Orange: '#f97316',
+  Cyan: '#0ea5e9'
+}
+
 function setMessage(elementId, text, isError = false) {
   const el = document.getElementById(elementId)
   if (!el) return
@@ -45,11 +55,37 @@ function showPasswordRecoveryBlock() {
   block.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
+function libelleDepuisCouleur(hex) {
+  const entree = Object.entries(COULEURS_PAR_LIBELLE).find(
+    ([, valeur]) => valeur.toLowerCase() === String(hex || '').toLowerCase()
+  )
+  return entree ? entree[0] : null
+}
+
+function pastilleIdDepuisClasse(classe) {
+  return `pastille-${classe.replace('°', '-').replace(/\s+/g, '').replace(/\./g, '')}`
+}
+
+function appliquerCouleurDansUI(classe, couleurHex) {
+  const select = document.querySelector(`.classes-couleurs select[data-classe="${classe}"]`)
+  const pastille = document.getElementById(pastilleIdDepuisClasse(classe))
+
+  if (pastille) {
+    pastille.style.background = couleurHex
+  }
+
+  const libelle = libelleDepuisCouleur(couleurHex)
+  if (select && libelle) {
+    select.value = libelle
+  }
+}
+
 async function protectCurrentPage() {
   const page = currentPageName()
   if (!isProtectedPage(page)) return
 
   const { data, error } = await sb.auth.getUser()
+
   if (error || !data?.user) {
     goToAuth()
     return
@@ -63,10 +99,12 @@ async function protectCurrentPage() {
 
 async function logoutUser() {
   const { error } = await sb.auth.signOut()
+
   if (error) {
     console.error('Erreur de déconnexion :', error.message)
     return
   }
+
   goToAuth()
 }
 
@@ -235,9 +273,15 @@ if (updatePasswordForm) {
   })
 }
 
-const COULEURS_PAR_LIBELLE = {
-  Bleu: '#2563eb',
-  error.message)  Jaune: '#f59e0b',
+async function chargerCouleursClasses() {
+  if (currentPageName() !== 'config.html') return
+
+  const { data, error } = await sb
+    .from('classes')
+    .select('nom, couleur')
+
+  if (error) {
+    console.error('Erreur chargement couleurs classes :', error.message)
     return
   }
 
@@ -265,70 +309,27 @@ async function enregistrerCouleurClasse(classe, libelleCouleur) {
   appliquerCouleurDansUI(classe, couleurHex)
 }
 
-function initialiserCouleursConfig() {
-  if (currentPageName() !== 'config.html') return
+async function updateCouleurPastille(selectElement, pastilleId) {
+  const libelleCouleur = selectElement.value
+  const couleurHex = COULEURS_PAR_LIBELLE[libelleCouleur] || '#94a3b8'
+  const classe = selectElement.dataset.classe
 
-  const selects = document.querySelectorAll('.classes-couleurs select[data-classe]')
-
-  selects.forEach((select) => {
-    select.addEventListener('change', async () => {
-      const classe = select.dataset.classe
-      const libelleCouleur = select.value
-      await enregistrerCouleurClasse(classe, libelleCouleur)
-    })
-  })
-
-  chargerCouleursClasses()
-}
-
-function updateCouleurPastille(selectElement, pastilleId) {
-  const couleurHex = COULEURS_PAR_LIBELLE[selectElement.value] || '#94a3b8'
   const pastille = document.getElementById(pastilleId)
-  if (!pastille) return
-  pastille.style.background = couleurHex
-}
-
-initialiserCouleursConfig()
-  Vert: '#16a34a',
-  Rouge: '#ef4444',
-  Violet: '#a855f7',
-  Orange: '#f97316',
-  Cyan: '#0ea5e9'
-}
-
-function libelleDepuisCouleur(hex) {
-  const entree = Object.entries(COULEURS_PAR_LIBELLE).find(
-    ([, valeur]) => valeur.toLowerCase() === String(hex || '').toLowerCase()
-  )
-  return entree ? entree[0] : null
-}
-
-function pastilleIdDepuisClasse(classe) {
-  return `pastille-${classe.replace('°', '-').replace(/\s+/g, '').replace(/\./g, '')}`
-}
-
-function appliquerCouleurDansUI(classe, couleurHex) {
-  const select = document.querySelector(`.classes-couleurs select[data-classe="${classe}"]`)
-  const pastille = document.getElementById(pastilleIdDepuisClasse(classe))
-
   if (pastille) {
     pastille.style.background = couleurHex
   }
 
-  const libelle = libelleDepuisCouleur(couleurHex)
-  if (select && libelle) {
-    select.value = libelle
-  }
+  if (!classe) return
+
+  await enregistrerCouleurClasse(classe, libelleCouleur)
 }
 
-async function chargerCouleursClasses() {
+window.updateCouleurPastille = updateCouleurPastille
+
+function initialiserCouleursConfig() {
   if (currentPageName() !== 'config.html') return
+  chargerCouleursClasses()
+}
 
-  const { data, error } = await sb
-    .from('classes')
-    .select('nom, couleur')
-
-  if (error) {
-
-
+initialiserCouleursConfig()
 protectCurrentPage()
