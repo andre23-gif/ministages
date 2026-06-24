@@ -1,5 +1,98 @@
 <!DOCTYPE html>
-<html lang: 700;<html lang="fr">
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Récapitulatif des mini-stages</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-text {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .header-user {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .header-user p {
+      margin: 0;
+      color: white;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .header-user button {
+      margin: 0;
+    }
+
+    .bandeau-semaines {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .resume-semaine {
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: var(--ombre);
+      color: var(--blanc);
+    }
+
+    .resume-semaine h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.2rem;
+    }
+
+    .resume-semaine p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1rem;
+    }
+
+    .resume-semaine.bleu {
+      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%);
+    }
+
+    .resume-semaine.jaune {
+      background: linear-gradient(135deg, var(--jaune) 0%, var(--jaune-fonce) 100%);
+      color: #3f3f46;
+    }
+
+    .resume-semaine.jaune h3,
+    .resume-semaine.jaune p {
+      color: #3f3f46;
+    }
+
+    .zone-filtres {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
+      gap: 16px;
+      align-items: end;
+    }
+
+    .zone-filtres p {
+      margin: 0;
+    }
+
+    .zone-filtres label {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-weight: 700;
       color: var(--bleu-fonce);
     }
 
@@ -179,96 +272,110 @@
 
       <div class="header-user">
         <p>Connecté : <strong id="user-email"></strong></p>
+        <button type="button" onclick="logoutUser()">Déconnexion</button>
+      </div>
+    </div>
+  </header>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Récapitulatif des mini-stages</title>
-  <link rel="stylesheet" href="style.css" />
+  <main>
+    <section>
+      <h2>Mini-stages de la semaine</h2>
 
-  <style>
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
+      <div class="bandeau-semaines">
+        <article class="resume-semaine bleu">
+          <h3>Semaine en cours</h3>
+          <p id="resume-semaine-courante">Aucune donnée affichée pour le moment.</p>
+        </article>
 
-    .header-text {
-      flex: 1;
-      min-width: 260px;
-    }
+        <article class="resume-semaine jaune">
+          <h3>Semaine suivante</h3>
+          <p id="resume-semaine-suivante">Aucune donnée affichée pour le moment.</p>
+        </article>
+      </div>
 
-    .header-user {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      min-width: 220px;
-    }
+      <p class="info-aide">
+        Cette zone affichera plus tard les données réelles calculées depuis Supabase.
+      </p>
+    </section>
 
-    .header-user p {
-      margin: 0;
-      color: white;
-      font-weight: 600;
-      text-align: right;
-    }
+    <section>
+      <h2>Filtres</h2>
 
-    .header-user button {
-      margin: 0;
-    }
+      <div class="zone-filtres">
+        <p>
+          <label for="filtre-classe">Classe</label>
+          <select id="filtre-classe">
+            <option value="">Toutes les classes</option>
+            <option>3°1</option>
+            <option>3°2</option>
+            <option>3°3</option>
+            <option>3°4</option>
+            <option>3°5</option>
+            <option>3°6</option>
+            <option>3°7</option>
+          </select>
+        </p>
 
-    .bandeau-semaines {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(240px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
+        <p>
+          <label for="filtre-semaine">Semaine</label>
+          <select id="filtre-semaine">
+            <option value="">Toutes les semaines</option>
+          </select>
+        </p>
 
-    .resume-semaine {
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: var(--ombre);
-      color: var(--blanc);
-    }
+        <p>
+          <label for="filtre-lieu">Lieu</label>
+          <select id="filtre-lieu">
+            <option value="">Tous les lieux</option>
+          </select>
+        </p>
 
-    .resume-semaine h3 {
-      margin: 0 0 8px 0;
-      font-size: 1.2rem;
-    }
+        <p>
+          <button type="button">Filtrer</button>
+        </p>
+      </div>
+    </section>
 
-    .resume-semaine p {
-      margin: 0;
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 1rem;
-    }
+    <section>
+      <h2>Tableau récapitulatif</h2>
 
-    .resume-semaine.bleu {
-      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%);
-    }
+      <div class="tableau-stages">
+        <table>
+          <thead>
+            <tr>
+              <th>Élève</th>
+              <th>Classe</th>
+              <th>Semaine</th>
+              <th>Date</th>
+              <th>Horaires</th>
+              <th>Lieu</th>
+              <th>Formation</th>
+              <th>État de la convention</th>
+              <th>Présence au stage</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="tableau-mini-stages">
+            <tr class="ligne-vide">
+              <td colspan="10">Aucun mini-stage à afficher pour le moment.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-    .resume-semaine.jaune {
-      background: linear-gradient(135deg, var(--jaune) 0%, var(--jaune-fonce) 100%);
-      color: #3f3f46;
-    }
+      <div class="actions-bas">
+        <button type="button" onclick="window.location.href='saisie.html'">Ajouter un mini-stage</button>
+        <button type="button" onclick="window.location.href='config.html'">Ouvrir la configuration</button>
+        <button type="button" onclick="window.location.href='index.html'">Retour à l’accueil</button>
+      </div>
+    </section>
+  </main>
 
-    .resume-semaine.jaune h3,
-    .resume-semaine.jaune p {
-      color: #3f3f46;
-    }
+  <footer>
+    <p>Application de suivi interne – mini-stages 3ème</p>
+  </footer>
 
-    .zone-filtres {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(180px, 1fr));
-      gap: 16px;
-      align-items: end;
-    }
-
-    .zone-filtres p {
-      margin: 0;
-    }
-
-    .zone-filtres label {
-      display: inline-block;
-      margin-bottom: 8px;
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+</body>
+</html>
