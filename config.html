@@ -385,6 +385,26 @@
     <p>Application de suivi interne – mini-stages 3ème</p>
   </footer>
 
+<script>
+  function updateCouleurPastille(selectElement, pastilleId) {
+    const couleurs = {
+      Bleu: '#2563eb',
+      Jaune: '#f59e0b',
+      Vert: '#16a34a',
+      Rouge: '#ef4444',
+      Violet: '#a855f7',
+      Orange: '#f97316',
+      Cyan: '#0ea5e9'
+    };
+
+    const pastille = document.getElementById(pastilleId);
+    if (!pastille) return;
+
+    const valeur = selectElement.value;
+    pastille.style.background = couleurs[valeur] || '#94a3b8';
+  }
+</script>
+        
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
