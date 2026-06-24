@@ -1,62 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Configuration</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <style>
-    .config-grid {
-      display: grid;
-      gap: 20px;
-    }
-
-    .config-bloc {
-      background: var(--blanc);
-      border: 1px solid var(--bordure);
-      border-radius: var(--rayon);
-      padding: 24px;
-      box-shadow: var(--ombre);
-    }
-
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .header-text {
-      flex: 1;
-      min-width: 260px;
-    }
-
-    .header-user {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      min-width: 220px;
-    }
-
-    .header-user p {
-      margin: 0;
-      color: white;
-      font-weight: 600;
-      text-align: right;
-    }
-
-    .header-user button {
-      margin: 0;
-    }
-
-    .config-bloc h2 {
-      margin-top: 0;
-      margin-bottom: 16px;
-      color: var(--bleu-fonce);
-      font-size: 1.2rem;
+ font-size: 1.2rem;<head>
     }
 
     .config-form {
@@ -250,127 +194,127 @@
       </p>
     </section>
 
-   <section class="config-bloc"><section class="config-blCyan">Cyan</option>
-      </select>
-    </div>
+    <section class="config-bloc">
+      <h2>Choix des couleurs par classe</h2>
 
-    <div class="classe-couleur">
-      <div class="classe-info">
-        <span class="pastille-couleur" id="pastille-3-2" style="background:#f59e0b;"></span>
-        <strong>3°2</strong>
+      <div class="classes-couleurs">
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" id="pastille-3-1" style="background:#2563eb;"></span>
+            <strong>3°1</strong>
+          </div>
+          <select data-classe="3°1" onchange="updateCouleurPastille(this, 'pastille-3-1')">
+            <option value="Bleu" selected>Bleu</option>
+            <option value="Jaune">Jaune</option>
+            <option value="Vert">Vert</option>
+            <option value="Rouge">Rouge</option>
+            <option value="Violet">Violet</option>
+            <option value="Orange">Orange</option>
+            <option value="Cyan">Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" id="pastille-3-2" style="background:#f59e0b;"></span>
+            <strong>3°2</strong>
+          </div>
+          <select data-classe="3°2" onchange="updateCouleurPastille(this, 'pastille-3-2')">
+            <option value="Bleu">Bleu</option>
+            <option value="Jaune" selected>Jaune</option>
+            <option value="Vert">Vert</option>
+            <option value="Rouge">Rouge</option>
+            <option value="Violet">Violet</option>
+            <option value="Orange">Orange</option>
+            <option value="Cyan">Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" id="pastille-3-3" style="background:#16a34a;"></span>
+            <strong>3°3</strong>
+          </div>
+          <select data-classe="3°3" onchange="updateCouleurPastille(this, 'pastille-3-3')">
+            <option value="Bleu">Bleu</option>
+            <option value="Jaune">Jaune</option>
+            <option value="Vert" selected>Vert</option>
+            <option value="Rouge">Rouge</option>
+            <option value="Violet">Violet</option>
+            <option value="Orange">Orange</option>
+            <option value="Cyan">Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" id="pastille-3-4" style="background:#ef4444;"></span>
+            <strong>3°4</strong>
+          </div>
+          <select data-classe="3°4" onchange="updateCouleurPastille(this, 'pastille-3-4')">
+            <option value="Bleu">Bleu</option>
+            <option value="Jaune">Jaune</option>
+            <option value="Vert">Vert</option>
+            <option value="Rouge" selected>Rouge</option>
+            <option value="Violet">Violet</option>
+            <option value="Orange">Orange</option>
+            <option value="Cyan">Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" id="pastille-3-5" style="background:#a855f7;"></span>
+            <strong>3°5</strong>
+          </div>
+          <select data-classe="3°5" onchange="updateCouleurPastille(this, 'pastille-3-5')">
+            <option value="Bleu">Bleu</option>
+            <option value="Jaune">Jaune</option>
+            <option value="Vert">Vert</option>
+            <option value="Rouge">Rouge</option>
+            <option value="Violet" selected>Violet</option>
+            <option value="Orange">Orange</option>
+            <option value="Cyan">Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" id="pastille-3-6" style="background:#f97316;"></span>
+            <strong>3°6</strong>
+          </div>
+          <select data-classe="3°6" onchange="updateCouleurPastille(this, 'pastille-3-6')">
+            <option value="Bleu">Bleu</option>
+            <option value="Jaune">Jaune</option>
+            <option value="Vert">Vert</option>
+            <option value="Rouge">Rouge</option>
+            <option value="Violet">Violet</option>
+            <option value="Orange" selected>Orange</option>
+            <option value="Cyan">Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" id="pastille-3-7" style="background:#0ea5e9;"></span>
+            <strong>3°7</strong>
+          </div>
+          <select data-classe="3°7" onchange="updateCouleurPastille(this, 'pastille-3-7')">
+            <option value="Bleu">Bleu</option>
+            <option value="Jaune">Jaune</option>
+            <option value="Vert">Vert</option>
+            <option value="Rouge">Rouge</option>
+            <option value="Violet">Violet</option>
+            <option value="Orange">Orange</option>
+            <option value="Cyan" selected>Cyan</option>
+          </select>
+        </div>
       </div>
-      <select data-classe="3°2" onchange="updateCouleurPastille(this, 'pastille-3-2')">
-        <option value="Bleu">Bleu</option>
-        <option value="Jaune" selected>Jaune</option>
-        <option value="Vert">Vert</option>
-        <option value="Rouge">Rouge</option>
-        <option value="Violet">Violet</option>
-        <option value="Orange">Orange</option>
-        <option value="Cyan">Cyan</option>
-      </select>
-    </div>
 
-    <div class="classe-couleur">
-      <div class="classe-info">
-        <span class="pastille-couleur" id="pastille-3-3" style="background:#16a34a;"></span>
-        <strong>3°3</strong>
-      </div>
-      <select data-classe="3°3" onchange="updateCouleurPastille(this, 'pastille-3-3')">
-        <option value="Bleu">Bleu</option>
-        <option value="Jaune">Jaune</option>
-        <option value="Vert" selected>Vert</option>
-        <option value="Rouge">Rouge</option>
-        <option value="Violet">Violet</option>
-        <option value="Orange">Orange</option>
-        <option value="Cyan">Cyan</option>
-      </select>
-    </div>
-
-    <div class="classe-couleur">
-      <div class="classe-info">
-        <span class="pastille-couleur" id="pastille-3-4" style="background:#ef4444;"></span>
-        <strong>3°4</strong>
-      </div>
-      <select data-classe="3°4" onchange="updateCouleurPastille(this, 'pastille-3-4')">
-        <option value="Bleu">Bleu</option>
-        <option value="Jaune">Jaune</option>
-        <option value="Vert">Vert</option>
-        <option value="Rouge" selected>Rouge</option>
-        <option value="Violet">Violet</option>
-        <option value="Orange">Orange</option>
-        <option value="Cyan">Cyan</option>
-      </select>
-    </div>
-
-    <div class="classe-couleur">
-      <div class="classe-info">
-        <span class="pastille-couleur" id="pastille-3-5" style="background:#a855f7;"></span>
-        <strong>3°5</strong>
-      </div>
-      <select data-classe="3°5" onchange="updateCouleurPastille(this, 'pastille-3-5')">
-        <option value="Bleu">Bleu</option>
-        <option value="Jaune">Jaune</option>
-        <option value="Vert">Vert</option>
-        <option value="Rouge">Rouge</option>
-        <option value="Violet" selected>Violet</option>
-        <option value="Orange">Orange</option>
-        <option value="Cyan">Cyan</option>
-      </select>
-    </div>
-
-    <div class="classe-couleur">
-      <div class="classe-info">
-        <span class="pastille-couleur" id="pastille-3-6" style="background:#f97316;"></span>
-        <strong>3°6</strong>
-      </div>
-      <select data-classe="3°6" onchange="updateCouleurPastille(this, 'pastille-3-6')">
-        <option value="Bleu">Bleu</option>
-        <option value="Jaune">Jaune</option>
-        <option value="Vert">Vert</option>
-        <option value="Rouge">Rouge</option>
-        <option value="Violet">Violet</option>
-        <option value="Orange" selected>Orange</option>
-        <option value="Cyan">Cyan</option>
-      </select>
-    </div>
-
-    <div class="classe-couleur">
-      <div class="classe-info">
-        <span class="pastille-couleur" id="pastille-3-7" style="background:#0ea5e9;"></span>
-        <strong>3°7</strong>
-      </div>
-      <select data-classe="3°7" onchange="updateCouleurPastille(this, 'pastille-3-7')">
-        <option value="Bleu">Bleu</option>
-        <option value="Jaune">Jaune</option>
-        <option value="Vert">Vert</option>
-        <option value="Rouge">Rouge</option>
-        <option value="Violet">Violet</option>
-        <option value="Orange">Orange</option>
-        <option value="Cyan" selected>Cyan</option>
-      </select>
-    </div>
-  </div>
-
-  <p class="info-aide">
-    La couleur choisie ici est visible immédiatement sur la pastille.
-  </p>
-</section>
-  <h2>Choix des couleurs par classe</h2>
-
-  <div class="classes-couleurs">
-    <div class="classe-couleur">
-      <div class="classe-info">
-        <span class="pastille-couleur" id="pastille-3-1" style="background:#2563eb;"></span>
-        <strong>3°1</strong>
-      </div>
-      <select data-classe="3°1" onchange="updateCouleurPastille(this, 'pastille-3-1')">
-        <option value="Bleu" selected>Bleu</option>
-        <option value="Jaune">Jaune</option>
-        <option value="Vert">Vert</option>
-        <option value="Rouge">Rouge</option>
-        <option value="Violet">Violet</option>
-        <option value="Orange">Orange</option>
-
+      <p class="info-aide">
+        La couleur choisie ici est visible immédiatement sur la pastille.
+      </p>
+    </section>
 
     <section class="config-bloc">
       <div class="actions-bas">
@@ -385,27 +329,82 @@
     <p>Application de suivi interne – mini-stages 3ème</p>
   </footer>
 
-<script>
-  function updateCouleurPastille(selectElement, pastilleId) {
-    const couleurs = {
-      Bleu: '#2563eb',
-      Jaune: '#f59e0b',
-      Vert: '#16a34a',
-      Rouge: '#ef4444',
-      Violet: '#a855f7',
-      Orange: '#f97316',
-      Cyan: '#0ea5e9'
-    };
+  <script>
+    function updateCouleurPastille(selectElement, pastilleId) {
+      const couleurs = {
+        Bleu: '#2563eb',
+        Jaune: '#f59e0b',
+        Vert: '#16a34a',
+        Rouge: '#ef4444',
+        Violet: '#a855f7',
+        Orange: '#f97316',
+        Cyan: '#0ea5e9'
+      };
 
-    const pastille = document.getElementById(pastilleId);
-    if (!pastille) return;
+      const pastille = document.getElementById(pastilleId);
+      if (!pastille) return;
 
-    const valeur = selectElement.value;
-    pastille.style.background = couleurs[valeur] || '#94a3b8';
-  }
-</script>
-        
+      const valeur = selectElement.value;
+      pastille.style.background = couleurs[valeur] || '#94a3b8';
+    }
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .config-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .config-bloc {
+      background: var(--blanc);
+      border: 1px solid var(--bordure);
+      border-radius: var(--rayon);
+      padding: 24px;
+      box-shadow: var(--ombre);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .header-text {
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .header-user {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .header-user p {
+      margin: 0;
+      color: white;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .header-user button {
+      margin: 0;
+    }
+
+    .config-bloc h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: var(--bleu-fonce);
