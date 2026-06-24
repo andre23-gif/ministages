@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Saisie d'un mini-stage</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <h1>Saisie d’un mini-stage</h1>
-    <p>
-      Enregistrez un mini-stage pour un élève de 3ème : classe, identité,
-      date, horaires, lieu, formation, convention et présence.
+registrez un mini-stage pour un élève de 3ème :  <meta charset="UTF-8" />
+      classe, identité, date, horaires, lieu, formation,
+      état de la convention et présence au stage.
     </p>
   </header>
 
   <main>
     <section>
-      <h2>Nouvelle fiche</h2>
+      <h2>Nouvelle fiche élève</h2>
+
       <form>
         <p>
           <label for="classe">Classe</label><br>
           <select id="classe" name="classe">
+            <option value="">Choisir une classe</option>
             <option>3°1</option>
             <option>3°2</option>
             <option>3°3</option>
@@ -33,7 +27,149 @@
         </p>
 
         <p>
+          <label for="semaine">Semaine</label><br>
+          <select id="semaine" name="semaine">
+            <option value="">Choisir une semaine</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option>18</option>
+            <option>19</option>
+            <option>20</option>
+            <option>21</option>
+            <option>22</option>
+            <option>23</option>
+            <option>24</option>
+            <option>25</option>
+            <option>26</option>
+            <option>27</option>
+            <option>28</option>
+            <option>29</option>
+            <option>30</option>
+            <option>31</option>
+            <option>32</option>
+            <option>33</option>
+            <option>34</option>
+            <option>35</option>
+            <option>36</option>
+            <option>37</option>
+            <option>38</option>
+            <option>39</option>
+            <option>40</option>
+            <option>41</option>
+            <option>42</option>
+            <option>43</option>
+            <option>44</option>
+            <option>45</option>
+            <option>46</option>
+            <option>47</option>
+            <option>48</option>
+            <option>49</option>
+            <option>50</option>
+            <option>51</option>
+            <option>52</option>
+          </select>
+        </p>
+
+        <p>
           <label for="nom">Nom</label><br>
+          <input type="text" id="nom" name="nom" placeholder="Nom de l'élève">
+        </p>
+
+        <p>
+          <label for="prenom">Prénom</label><br>
+          <input type="text" id="prenom" name="prenom" placeholder="Prénom de l'élève">
+        </p>
+
+        <p>
+          <label for="date_stage">Date</label><br>
+          <input type="date" id="date_stage" name="date_stage">
+        </p>
+
+        <p>
+          <label for="heure_debut">Heure de début</label><br>
+          <input type="time" id="heure_debut" name="heure_debut">
+        </p>
+
+        <p>
+          <label for="heure_fin">Heure de fin</label><br>
+          <input type="time" id="heure_fin" name="heure_fin">
+        </p>
+
+        <p class="large">
+          <label for="lieu">Lieu</label><br>
+          <select id="lieu" name="lieu">
+            <option value="">Choisir un lieu</option>
+            <option>À compléter plus tard depuis Supabase</option>
+          </select>
+        </p>
+
+        <p class="large">
+          <label for="formation">Formation</label><br>
+          <select id="formation" name="formation">
+            <option value="">Choisir une formation</option>
+            <option>À compléter plus tard depuis Supabase</option>
+          </select>
+        </p>
+
+        <p class="large">
+          <label for="etat_convention">État de la convention</label><br>
+          <select id="etat_convention" name="etat_convention">
+            <option>?</option>
+            <option>Accord famille</option>
+            <option>Conventions distribuées</option>
+            <option>Conventions signées</option>
+            <option>Conventions expédiées</option>
+            <option>Dates bloquées</option>
+          </select>
+        </p>
+
+        <p class="large">
+          <label for="presence_stage">Présence au stage</label><br>
+          <select id="presence_stage" name="presence_stage">
+            <option>?</option>
+            <option>Absence au stage</option>
+            <option>Présent au stage</option>
+            <option>Stage reprogrammé</option>
+          </select>
+        </p>
+
+        <p>
+          <button type="submit">Enregistrer</button>
+          <button type="button" onclick="window.location.href='index.html'">Retour à l'accueil</button>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>Application de suivi interne – mini-stages 3ème</p>
+  </footer>
+</body>
+</html>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saisie d'un mini-stage</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Saisie d’un mini-stage</h1>
+    <p>
           <input type="text" id="nom" name="nom" placeholder="Nom de l'élève">
         </p>
 
