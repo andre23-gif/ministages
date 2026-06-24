@@ -1,5 +1,77 @@
-const SUPABASE_URL = 'https://VOTRE-PROJET.supabase.co'const SUPABASE_URL = event, session)
+const SUPABASE_URL = 'https://VOTRE-PROJET.supabase.co'const SUPABASE SUPABASE_PUBLISHABLE_KEY = 'VOTRE_PUBLISHABLE_KEY'
 
+const { createClient } = supabase
+const sb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+window.sb = sb
+
+let passwordRecoveryMode = false
+
+function setMessage(elementId, text, isError = false) {
+  const el = document.getElementById(elementId)
+  if (!el) return
+  el.textContent = text
+  el.style.color = isError ? '#b91c1c' : '#475569'
+}
+
+function currentPageName() {
+  const parts = window.location.pathname.split('/')
+  return parts[parts.length - 1] || 'index.html'
+}
+
+function isProtectedPage(page) {
+  return ['saisie.html', 'recap.html', 'config.html'].includes(page)
+}
+
+function authPageUrl() {
+  const url = new URL(window.location.href)
+  url.pathname = url.pathname.replace(/[^/]+$/, 'auth.html')
+  url.hash = ''
+  return url.toString()
+}
+
+function goToAuth() {
+  window.location.href = 'auth.html'
+}
+
+function goToHome() {
+  window.location.href = 'index.html'
+}
+
+function showPasswordRecoveryBlock() {
+  const block = document.getElementById('update-password-bloc')
+  if (!block) return
+  block.style.display = 'block'
+  block.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+async function protectCurrentPage() {
+  const page = currentPageName()
+  if (!isProtectedPage(page)) return
+
+  const { data, error } = await sb.auth.getUser()
+  if (error || !data?.user) {
+    goToAuth()
+    return
+  }
+
+  const userEmailEl = document.getElementById('user-email')
+  if (userEmailEl) {
+    userEmailEl.textContent = data.user.email || ''
+  }
+}
+
+async function logoutUser() {
+  const { error } = await sb.auth.signOut()
+  if (error) {
+    console.error('Erreur de déconnexion :', error.message)
+    return
+  }
+  goToAuth()
+}
+
+window.logoutUser = logoutUser
+
+sb.auth.onAuthStateChange((event) => {
   if (event === 'PASSWORD_RECOVERY') {
     passwordRecoveryMode = true
     showPasswordRecoveryBlock()
@@ -11,19 +83,13 @@ const SUPABASE_URL = 'https://VOTRE-PROJET.supabase.co'const SUPABASE_URL = even
 
   if (event === 'SIGNED_OUT') {
     passwordRecoveryMode = false
-
-    const page = currentPageName()
-    if (isProtectedPage(page)) {
+    if (isProtectedPage(currentPageName())) {
       goToAuth()
     }
   }
 })
 
-// -----------------------------
-// Inscription
-// -----------------------------
 const signupForm = document.getElementById('signup-form')
-
 if (signupForm) {
   signupForm.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -42,7 +108,7 @@ if (signupForm) {
       email,
       password,
       options: {
-        emailRedirectTo: buildAuthRedirectUrl()
+        emailRedirectTo: authPageUrl()
       }
     })
 
@@ -60,11 +126,7 @@ if (signupForm) {
   })
 }
 
-// -----------------------------
-// Connexion
-// -----------------------------
 const loginForm = document.getElementById('login-form')
-
 if (loginForm) {
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -90,15 +152,11 @@ if (loginForm) {
     }
 
     setMessage('login-message', 'Connexion réussie.')
-    window.location.href = 'index.html'
+    goToHome()
   })
 }
 
-// -----------------------------
-// Mot de passe oublié
-// -----------------------------
 const forgotForm = document.getElementById('forgot-form')
-
 if (forgotForm) {
   forgotForm.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -113,7 +171,7 @@ if (forgotForm) {
     }
 
     const { error } = await sb.auth.resetPasswordForEmail(email, {
-      redirectTo: buildAuthRedirectUrl()
+      redirectTo: authPageUrl()
     })
 
     if (error) {
@@ -130,11 +188,7 @@ if (forgotForm) {
   })
 }
 
-// -----------------------------
-// Mise à jour du mot de passe
-// -----------------------------
 const updatePasswordForm = document.getElementById('update-password-form')
-
 if (updatePasswordForm) {
   updatePasswordForm.addEventListener('submit', async (e) => {
     e.preventDefault()
@@ -180,94 +234,4 @@ if (updatePasswordForm) {
   })
 }
 
-// -----------------------------
-// Lancer la protection au chargement
-// -----------------------------
 protectCurrentPage()
-
-const SUPABASE_PUBLISHABLE_KEY = 'VOTRE_PUBLISHABLE_KEY'
-
-const { createClient } = supabase
-const sb = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-window.sb = sb
-
-let passwordRecoveryMode = false
-
-function setMessage(elementId, text, isError = false) {
-  const el = document.getElementById(elementId)
-  if (!el) return
-
-  el.textContent = text
-  el.style.color = isError ? '#b91c1c' : '#475569'
-}
-
-function buildAuthRedirectUrl() {
-  const url = new URL(window.location.href)
-  url.pathname = url.pathname.replace(/[^/]+$/, 'auth.html')
-  url.hash = ''
-  return url.toString()
-}
-
-function showPasswordRecoveryBlock() {
-  const bloc = document.getElementById('update-password-bloc')
-  if (!bloc) return
-
-  bloc.style.display = 'block'
-  bloc.scrollIntoView({ behavior: 'smooth', block: 'start' })
-}
-
-function currentPageName() {
-  const parts = window.location.pathname.split('/')
-  return parts[parts.length - 1] || 'index.html'
-}
-
-function isProtectedPage(page) {
-  return ['saisie.html', 'recap.html', 'config.html'].includes(page)
-}
-
-function goToAuth() {
-  window.location.href = 'auth.html'
-}
-
-// -----------------------------
-// Protection des pages
-// -----------------------------
-async function protectCurrentPage() {
-  const page = currentPageName()
-
-  if (!isProtectedPage(page)) return
-
-  const { data, error } = await sb.auth.getUser()
-
-  if (error || !data?.user) {
-    goToAuth()
-    return
-  }
-
-  // Optionnel : afficher le mail de l'utilisateur connecté si un emplacement existe
-  const userEmailEl = document.getElementById('user-email')
-  if (userEmailEl) {
-    userEmailEl.textContent = data.user.email || ''
-  }
-}
-
-// -----------------------------
-// Déconnexion
-// -----------------------------
-async function logoutUser() {
-  const { error } = await sb.auth.signOut()
-
-  if (error) {
-    console.error('Erreur de déconnexion :', error.message)
-    return
-  }
-
-  goToAuth()
-}
-
-window.logoutUser = logoutUser
-
-// -----------------------------
-// Événements d'authentification
-// -----------------------------
-sb.auth.onAuthStateChange((event, session) => {
