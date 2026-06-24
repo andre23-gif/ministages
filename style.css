@@ -18,8 +18,13 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+}
+
+body {
   padding: 32px 20px;
   font-family: Arial, sans-serif;
   background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 35%, #fffde7 100%);
@@ -68,77 +73,458 @@ section {
   box-shadow: var(--ombre);
 }
 
-section h2 {
+section h2,
+section h3 {
   margin-top: 0;
   margin-bottom: 14px;
-  font-size: 1.35rem;
   color: var(--bleu-fonce);
 }
 
-section p {
-  margin: 0 0 10px 0;
-  font-size: 1rem;
-  line-height: 1.65;
-  color: var(--texte-secondaire);
+p {
+  line-height: 1.6;
 }
 
-button {
+/* =======================
+   Boutons
+======================= */
+button,
+.lien-bouton {
   border: none;
   border-radius: 999px;
   padding: 14px 20px;
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  margin-right: 12px;
-  margin-top: 10px;
   box-shadow: var(--ombre);
   transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
-button:hover {
+button:hover,
+.lien-bouton:hover {
   transform: translateY(-2px);
   box-shadow: 0 14px 30px rgba(15, 23, 42, 0.12);
   opacity: 0.98;
 }
 
-button:nth-of-type(1) {
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus {
+  outline: none;
+}
+
+/* bouton principal */
+button,
+.lien-bouton {
   background: var(--bleu);
   color: var(--blanc);
 }
 
-button:nth-of-type(2) {
+/* bouton secondaire jaune */
+button.secondary,
+.lien-bouton.secondary {
   background: var(--jaune);
   color: #3f3f46;
 }
 
-button:nth-of-type(3) {
-  background: var(--bleu-fonce);
+/* bouton neutre */
+button.neutral,
+.lien-bouton.neutral {
+  background: #e2e8f0;
+  color: var(--texte);
+}
+
+/* bouton danger */
+button.danger,
+.lien-bouton.danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* =======================
+   Formulaires
+======================= */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--bordure);
+  border-radius: 14px;
+  font-size: 1rem;
+  color: var(--texte);
+  background: var(--blanc);
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--bleu);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  color: var(--bleu-fonce);
+}
+
+form p {
+  margin: 0;
+}
+
+/* =======================
+   En-têtes avec utilisateur
+======================= */
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.header-text {
+  flex: 1;
+  min-width: 260px;
+}
+
+.header-user {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 220px;
+}
+
+.header-user p {
+  margin: 0;
+  color: white;
+  font-weight: 600;
+  text-align: right;
+}
+
+.header-user button {
+  margin: 0;
+}
+
+/* =======================
+   Pages simples accueil
+======================= */
+.section-simple {
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 24px;
+  box-shadow: var(--ombre);
+}
+
+.section-simple h2 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  color: var(--bleu-fonce);
+  font-size: 1.3rem;
+}
+
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.home-actions button {
+  margin: 0;
+}
+
+/* =======================
+   Page auth
+======================= */
+.auth-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.auth-bloc {
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 24px;
+  box-shadow: var(--ombre);
+}
+
+.auth-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.auth-message {
+  min-height: 24px;
+  font-size: 0.95rem;
+  color: var(--texte-secondaire);
+  line-height: 1.4;
+}
+
+.bloc-large {
+  grid-column: 1 / -1;
+}
+
+#update-password-bloc {
+  display: none;
+  border-left: 8px solid var(--jaune);
+}
+
+/* =======================
+   Page saisie
+======================= */
+.page-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 18px 20px;
+  align-items: end;
+}
+
+.page-form .large {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.form-actions button {
+  margin: 0;
+}
+
+/* =======================
+   Page recap
+======================= */
+.bandeau-semaines {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.resume-semaine {
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--ombre);
   color: var(--blanc);
 }
 
+.resume-semaine h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+}
+
+.resume-semaine p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+}
+
+.resume-semaine.bleu {
+  background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%);
+}
+
+.resume-semaine.jaune {
+  background: linear-gradient(135deg, var(--jaune) 0%, var(--jaune-fonce) 100%);
+  color: #3f3f46;
+}
+
+.resume-semaine.jaune h3,
+.resume-semaine.jaune p {
+  color: #3f3f46;
+}
+
+.zone-filtres {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 16px;
+  align-items: end;
+}
+
+.zone-filtres p {
+  margin: 0;
+}
+
+.tableau-stages {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: var(--blanc);
+}
+
+.tableau-stages table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.tableau-stages th,
+.tableau-stages td {
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableau-stages th {
+  background: #eff6ff;
+  color: var(--bleu-fonce);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tableau-stages td {
+  font-size: 0.96rem;
+  color: var(--texte);
+}
+
+.ligne-vide td {
+  text-align: center;
+  color: var(--texte-secondaire);
+  padding: 24px 16px;
+  font-style: italic;
+}
+
+.badge-classe {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.classe-1 { background: #2563eb; }
+.classe-2 { background: #f59e0b; }
+.classe-3 { background: #16a34a; }
+.classe-4 { background: #ef4444; }
+.classe-5 { background: #a855f7; }
+.classe-6 { background: #f97316; }
+.classe-7 { background: #0ea5e9; }
+
+.btn-supprimer {
+  background: #fee2e2;
+  color: #991b1b;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* =======================
+   Page config
+======================= */
+.config-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.config-bloc {
+  background: var(--blanc);
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 24px;
+  box-shadow: var(--ombre);
+}
+
+.config-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.classes-couleurs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.classe-couleur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.classe-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pastille-couleur {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-block;
+  border: 2px solid rgba(15, 23, 42, 0.15);
+  flex-shrink: 0;
+}
+
+.actions-bas {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.actions-bas button {
+  margin: 0;
+}
+
+.info-aide {
+  margin-top: 8px;
+  font-size: 0.96rem;
+  color: var(--texte-secondaire);
+  line-height: 1.6;
+}
+
+/* =======================
+   Footer
+======================= */
 footer {
   margin-top: 24px;
   text-align: center;
   color: var(--texte-secondaire);
   font-size: 0.95rem;
-  padding: 10px 0 0 0;
+  padding-top: 8px;
 }
 
-/* Mise en valeur légère de certaines sections */
-section:nth-of-type(2) {
-  border-left: 8px solid var(--jaune);
-}
-
-section:nth-of-type(3) {
-  border-left: 8px solid var(--bleu);
-}
-
-section:nth-of-type(4) {
-  background: linear-gradient(180deg, #ffffff 0%, #fefce8 100%);
-}
-
-/* Responsive */
-@media (max-width: 700px) {
+/* =======================
+   Responsive
+======================= */
+@media (max-width: 900px) {
   body {
     padding: 18px 12px;
   }
@@ -152,144 +538,61 @@ section:nth-of-type(4) {
     font-size: 1.8rem;
   }
 
-  section {
+  section,
+  .section-simple,
+  .config-bloc,
+  .auth-bloc {
     padding: 18px;
   }
 
-  button {
-    width: 100%;
-    margin-right: 0;
-  }
-}
-  border: none;
-  border-radius: var(--rayon);
-  padding: 12px 18px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  margin-right: 10px;
-  margin-bottom: 10px;
-  box-shadow: var(--ombre);
-  transition: transform 0.15s ease, opacity 0.15s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
-}
-
-button:nth-of-type(1) {
-  background: var(--bleu);
-  color: var(--blanc);
-}
-
-button:nth-of-type(2) {
-  background: var(--jaune);
-  color: var(--texte);
-}
-
-button:nth-of-type(3) {
-  background: var(--bleu-fonce);
-  color: var(--blanc);
-}
-
-/* ---------- FORMULAIRE SAISIE ---------- */
-
-form {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(240px, 1fr));
-  gap: 18px 20px;
-  align-items: end;
-}
-
-form p {
-  margin: 0;
-}
-
-label {
-  display: inline-block;
-  margin-bottom: 8px;
-  font-weight: 700;
-  color: var(--bleu-fonce);
-  font-size: 0.98rem;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 12px 14px;
-  border: 1px solid var(--bordure);
-  border-radius: 14px;
-  font-size: 1rem;
-  color: var(--texte);
-  background: var(--blanc);
-  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
-}
-
-input:focus,
-select:focus {
-  outline: none;
-  border-color: var(--bleu);
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-  background: #ffffff;
-}
-
-input::placeholder {
-  color: #94a3b8;
-}
-
-/* Champs plus larges */
-#nom,
-#prenom,
-#lieu,
-#formation,
-#etat_convention,
-#presence_stage {
-  min-height: 48px;
-}
-
-/* Ligne de boutons sur toute la largeur */
-form p:last-child {
-  grid-column: 1 / -1;
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-}
-
-/* Boutons du formulaire */
-form button[type="submit"] {
-  background: var(--bleu);
-  color: var(--blanc);
-}
-
-form button[type="button"] {
-  background: var(--jaune);
-  color: #3f3f46;
-}
-
-/* Certains champs en pleine largeur pour plus de confort */
-form p.large {
-  grid-column: span 2;
-}
-
-/* Responsive */
-@media (max-width: 800px) {
-  form {
-    grid-template-columns: 1fr;
-  }
-
-  form p.large {
-  grid-column: span 1;
-}
-
-  form p:last-child {
-    grid-column: span 1;
+  .header-top {
     flex-direction: column;
   }
 
-  form button {
+  .header-user {
+    align-items: flex-start;
+  }
+
+  .header-user p {
+    text-align: left;
+  }
+
+  .auth-grid,
+  .classes-couleurs,
+  .bandeau-semaines,
+  .zone-filtres,
+  .config-form,
+  .page-form {
+    grid-template-columns: 1fr;
+  }
+
+  .bloc-large,
+  .page-form .large,
+  .form-actions {
+    grid-column: auto;
+  }
+
+  .auth-actions,
+  .home-actions,
+  .actions-bas,
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .auth-actions button,
+  .home-actions button,
+  .actions-bas button,
+  .form-actions button,
+  .config-form button {
     width: 100%;
+  }
+
+  .classe-couleur {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tableau-stages table {
+    min-width: 760px;
   }
 }
