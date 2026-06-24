@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="12px 14px;<html lang="fr">
+      border: 1px solid var(--bordure);
+      border-radius: 14px;
+      font-size: 1rem;
+      color: var(--texte);
+      background: var(--blanc);
+      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+
+    .config-form input:focus,
+    .config-form select:focus {
+      outline: none;
+      border-color: var(--bleu);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .config-form button {
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .liste-elements {
+      display: grid;
+      gap: 12px;
+    }
+
+    .ligne-element {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+
+    .ligne-element strong {
+      color: var(--texte);
+    }
+
+    .actions-ligne {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .actions-ligne button {
+      margin: 0;
+      box-shadow: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+    }
+
+    .btn-secondaire {
+      background: var(--jaune);
+      color: #3f3f46;
+    }
+
+    .btn-neutre {
+      background: #e2e8f0;
+      color: var(--texte);
+    }
+
+    .classes-couleurs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .classe-couleur {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      background: #f8fafc;
+    }
+
+    .classe-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pastille-couleur {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 2px solid rgba(15, 23, 42, 0.15);
+    }
+
+    .classe-info strong {
+      font-size: 1rem;
+      color: var(--texte);
+    }
+
+    .classe-couleur select {
+      min-width: 170px;
+      padding: 10px 12px;
+      border: 1px solid var(--bordure);
+      border-radius: 12px;
+      background: var(--blanc);
+    }
+
+    .actions-bas {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .info-aide {
+      margin-top: 8px;
+      font-size: 0.96rem;
+      color: var(--texte-secondaire);
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .config-form {
+        grid-template-columns: 1fr;
+      }
+
+      .classes-couleurs {
+        grid-template-columns: 1fr;
+      }
+
+      .ligne-element,
+      .classe-couleur {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions-bas {
+        flex-direction: column;
+      }
+
+      .actions-bas button,
+      .config-form button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Configuration</h1>
+    <p>
+      Gérez les éléments partagés de l’application :
+      lieux, formations et couleurs associées aux classes.
+    </p>
+  </header>
+
+  <main class="config-grid">
+    <section class="config-bloc">
+      <h2>Administration générale</h2>
+      <p class="info-aide">
+        Cette page permettra plus tard d’ajouter réellement des lieux et des formations
+        dans Supabase, ainsi que de choisir la couleur d’affichage de chaque classe.
+        Pour l’instant, il s’agit d’une maquette visuelle complète.
+      </p>
+    </section>
+
+    <section class="config-bloc">
+      <h3>Ajouter un lieu</h3>
+
+      <form class="config-form">
+        <p>
+          <label for="nouveau-lieu">Nom du lieu</label>
+          <input type="text" id="nouveau-lieu" name="nouveau-lieu" placeholder="Ex. Lycée des métiers de Rambouillet">
+        </p>
+        <button type="button">Ajouter le lieu</button>
+      </form>
+
+      <div class="liste-elements">
+        <div class="ligne-element">
+          <strong>Lycée A</strong>
+          <div class="actions-ligne">
+            <button type="button" class="btn-secondaire">Modifier</button>
+            <button type="button" class="btn-neutre">Supprimer</button>
+          </div>
+        </div>
+
+        <div class="ligne-element">
+          <strong>Lycée B</strong>
+          <div class="actions-ligne">
+            <button type="button" class="btn-secondaire">Modifier</button>
+            <button type="button" class="btn-neutre">Supprimer</button>
+          </div>
+        </div>
+
+        <div class="ligne-element">
+          <strong>CFA X</strong>
+          <div class="actions-ligne">
+            <button type="button" class="btn-secondaire">Modifier</button>
+            <button type="button" class="btn-neutre">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="config-bloc">
+      <h3>Ajouter une formation</h3>
+
+      <form class="config-form">
+        <p>
+          <label for="nouvelle-formation">Nom de la formation</label>
+          <input type="text" id="nouvelle-formation" name="nouvelle-formation" placeholder="Ex. Bac pro MELEC">
+        </p>
+        <button type="button">Ajouter la formation</button>
+      </form>
+
+      <div class="liste-elements">
+        <div class="ligne-element">
+          <strong>Bac pro MELEC</strong>
+          <div class="actions-ligne">
+            <button type="button" class="btn-secondaire">Modifier</button>
+            <button type="button" class="btn-neutre">Supprimer</button>
+          </div>
+        </div>
+
+        <div class="ligne-element">
+          <strong>CAP Cuisine</strong>
+          <div class="actions-ligne">
+            <button type="button" class="btn-secondaire">Modifier</button>
+            <button type="button" class="btn-neutre">Supprimer</button>
+          </div>
+        </div>
+
+        <div class="ligne-element">
+          <strong>Seconde générale</strong>
+          <div class="actions-ligne">
+            <button type="button" class="btn-secondaire">Modifier</button>
+            <button type="button" class="btn-neutre">Supprimer</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="config-bloc">
+      <h3>Couleur par classe</h3>
+
+      <div class="classes-couleurs">
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" style="background:#2563eb;"></span>
+            <strong>3°1</strong>
+          </div>
+          <select>
+            <option selected>Bleu</option>
+            <option>Jaune</option>
+            <option>Vert</option>
+            <option>Rouge</option>
+            <option>Violet</option>
+            <option>Orange</option>
+            <option>Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" style="background:#f59e0b;"></span>
+            <strong>3°2</strong>
+          </div>
+          <select>
+            <option>Bleu</option>
+            <option selected>Jaune</option>
+            <option>Vert</option>
+            <option>Rouge</option>
+            <option>Violet</option>
+            <option>Orange</option>
+            <option>Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" style="background:#16a34a;"></span>
+            <strong>3°3</strong>
+          </div>
+          <select>
+            <option>Bleu</option>
+            <option>Jaune</option>
+            <option selected>Vert</option>
+            <option>Rouge</option>
+            <option>Violet</option>
+            <option>Orange</option>
+            <option>Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" style="background:#ef4444;"></span>
+            <strong>3°4</strong>
+          </div>
+          <select>
+            <option>Bleu</option>
+            <option>Jaune</option>
+            <option>Vert</option>
+            <option selected>Rouge</option>
+            <option>Violet</option>
+            <option>Orange</option>
+            <option>Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" style="background:#a855f7;"></span>
+            <strong>3°5</strong>
+          </div>
+          <select>
+            <option>Bleu</option>
+            <option>Jaune</option>
+            <option>Vert</option>
+            <option>Rouge</option>
+            <option selected>Violet</option>
+            <option>Orange</option>
+            <option>Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" style="background:#f97316;"></span>
+            <strong>3°6</strong>
+          </div>
+          <select>
+            <option>Bleu</option>
+            <option>Jaune</option>
+            <option>Vert</option>
+            <option>Rouge</option>
+            <option>Violet</option>
+            <option selected>Orange</option>
+            <option>Cyan</option>
+          </select>
+        </div>
+
+        <div class="classe-couleur">
+          <div class="classe-info">
+            <span class="pastille-couleur" style="background:#0ea5e9;"></span>
+            <strong>3°7</strong>
+          </div>
+          <select>
+            <option>Bleu</option>
+            <option>Jaune</option>
+            <option>Vert</option>
+            <option>Rouge</option>
+            <option>Violet</option>
+            <option>Orange</option>
+            <option selected>Cyan</option>
+          </select>
+        </div>
+      </div>
+
+      <p class="info-aide">
+        Plus tard, chaque couleur choisie ici permettra d’afficher visuellement les élèves
+        dans le récapitulatif pour mieux repérer ceux à relancer.
+      </p>
+    </section>
+
+    <section class="config-bloc">
+      <h3>Navigation</h3>
+
+      <div class="actions-bas">
+        <button type="button" onclick="window.location.href='saisie.html'">Aller à la saisie</button>
+        <button type="button" onclick="window.location.href='recap.html'">Voir le récapitulatif</button>
+        <button type="button" onclick="window.location.href='index.html'">Retour à l’accueil</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Application de suivi interne – mini-stages 3ème</p>
+  </footer>
+</body>
+</html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Configuration</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .config-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .config-bloc {
+      background: var(--blanc);
+      border: 1px solid var(--bordure);
+      border-radius: var(--rayon);
+      padding: 24px;
+      box-shadow: var(--ombre);
+    }
+
+    .config-bloc h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: var(--bleu-fonce);
+      font-size: 1.2rem;
+    }
+
+    .config-form {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .config-form p {
+      margin: 0;
+    }
+
+    .config-form label {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--bleu-fonce);
+    }
+
+    .config-form input,
+    .config-form select {
+      width: 100%;
