@@ -5,7 +5,7 @@
 // Supabase indique que la publishable key est prévue pour les composants publics
 // comme les pages web. 
 
-const SUPABASE_URL = 'https://VOTRE-PROJET.supabase.co'
+const SUPABASE_URL = 'https://pxdtyaqjxmihaeericqf.supabase.co/rest/v1/'
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_dDgWNoCh43KsVEHJmpoEzg_4WSDyrvt'
 
 // Cette version suppose que la bibliothèque Supabase est déjà chargée
