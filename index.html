@@ -4,53 +4,94 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Suivi mini-stages 3ème</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    .section-simple {
+      background: var(--blanc);
+      border: 1px solid var(--bordure);
+      border-radius: var(--rayon);
+      padding: 24px;
+      box-shadow: var(--ombre);
+    }
+
+    .section-simple h2 {
+      margin-top: 0;
+      margin-bottom: 14px;
+      color: var(--bleu-fonce);
+      font-size: 1.3rem;
+    }
+
+    .home-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .home-actions button {
+      margin: 0;
+    }
+
+    .intro-list p {
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 800px) {
+      .home-actions {
+        flex-direction: column;
+      }
+
+      .home-actions button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <h1>Suivi des mini-stages 3ème</h1>
     <p>
-      Application de suivi des élèves de 3ème en mini-stage au lycée :
+      Application de suivi des élèves en mini-stage au lycée :
       saisie, récapitulatif et suivi administratif.
     </p>
   </header>
 
   <main>
-    <section>
+    <section class="section-simple">
       <h2>Bienvenue</h2>
       <p>
-        Cette application permet de suivre les mini-stages des élèves des classes
-        3°1 à 3°7, avec visualisation des rendez-vous, de la convention
-        et de la présence au stage.
+        Cette application permet de gérer les mini-stages des élèves de 3ème,
+        de suivre l’état des conventions, la présence au stage
+        et d’organiser les informations par classe.
       </p>
+
+      <div class="home-actions">
+        <button type="button" onclick="window.location.href='auth.html'">Connexion / Inscription</button>
+        <button type="button" onclick="window.location.href='saisie.html'">Saisir un mini-stage</button>
+        <button type="button" onclick="window.location.href='recap.html'">Voir le récapitulatif</button>
+        <button type="button" onclick="window.location.href='config.html'">Ouvrir la configuration</button>
+      </div>
     </section>
 
-    <section>
-  <h2>Accès rapide</h2>
-  <p>
-    Choisissez l’action à effectuer :
-  </p>
-
-  <button type="button" onclick="window.location.href='auth.html'">Connexion / Inscription</button>
-  <button type="button" onclick="window.location.href='saisie.html'">Saisir un mini-stage</button>
-  <button type="button" onclick="window.location.href='recap.html'">Voir le récapitulatif</button>
-  <button type="button" onclick="window.location.href='config.html'">Ouvrir la configuration</button>
-</section>
-    <section>
-      <h2>Fonctionnalités prévues</h2>
-      <p>✔ Saisie des mini-stages par classe, date, lieu et formation</p>
-      <p>✔ Suivi de l’état de la convention</p>
-      <p>✔ Suivi de la présence au stage</p>
-      <p>✔ Couleur par classe pour repérer les élèves à relancer</p>
-      <p>✔ Gestion partagée des lieux et des formations</p>
+    <section class="section-simple">
+      <h2>Fonctionnalités</h2>
+      <div class="intro-list">
+        <p>✔ Saisie des mini-stages par classe, date, lieu et formation</p>
+        <p>✔ Suivi de l’état de la convention</p>
+        <p>✔ Suivi de la présence au stage</p>
+        <p>✔ Couleur par classe pour repérer les élèves à relancer</p>
+        <p>✔ Gestion des formations et des lieux associés</p>
+      </div>
     </section>
-
   </main>
 
   <footer>
     <p>Application de suivi interne – mini-stages 3ème</p>
   </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
