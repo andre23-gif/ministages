@@ -442,4 +442,77 @@ async function chargerLieuxDansConfig() {
 }
 
 chargerLieuxDansConfig()
+async function initialiserAjoutFormationConfig() {
+  if (currentPageName() !== 'config.html') return
+
+  const inputNom = document.getElementById('nom-formation')
+  const selectLieu = document.getElementById('lieu-formation')
+  const boutonAjouter = document.getElementById('btn-ajouter-formation')
+  const message = document.getElementById('message-formation')
+
+  if (!inputNom || !selectLieu || !boutonAjouter) return
+
+  boutonAjouter.addEventListener('click', async () => {
+    const nomFormation = inputNom.value.trim()
+    const lieuId = selectLieu.value
+
+    if (message) {
+      message.textContent = ''
+      message.style.color = '#475569'
+    }
+
+    if (!nomFormation || !lieuId) {
+      if (message) {
+        message.textContent = 'Merci de saisir un nom de formation et de choisir un lieu.'
+        message.style.color = '#b91c1c'
+      }
+      return
+    }
+
+    const { data: userData, error: userError } = await sb.auth.getUser()
+
+    if (userError) {
+      if (message) {
+        message.textContent = `Erreur utilisateur : ${userError.message}`
+        message.style.color = '#b91c1c'
+      }
+      return
+    }
+
+    const createdBy = userData?.user?.email || null
+
+    const { error } = await sb
+      .from('formations')
+      .insert([
+        {
+          nom: nomFormation,
+          lieu_id: Number(lieuId),
+          created_by: createdBy
+        }
+      ])
+
+    if (error) {
+      if (message) {
+        message.textContent = `Erreur enregistrement formation : ${error.message}`
+        message.style.color = '#b91c1c'
+      }
+      return
+    }
+
+    if (message) {
+      message.textContent = 'Formation enregistrée avec succès.'
+      message.style.color = '#166534'
+    }
+
+    inputNom.value = ''
+    selectLieu.value = ''
+
+    if (typeof chargerFormationsDansRecap === 'function') {
+      chargerFormationsDansRecap()
+    }
+  })
+}
+
+initialiserAjoutFormationConfig()
+
 protectCurrentPage()
