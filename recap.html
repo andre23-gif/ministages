@@ -84,6 +84,39 @@
       color: #3f3f46;
     }
 
+.tableau-formations {
+  overflow-x: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  background: var(--blanc);
+}
+
+.tableau-formations table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.tableau-formations th,
+.tableau-formations td {
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tableau-formations th {
+  background: #eff6ff;
+  color: var(--bleu-fonce);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tableau-formations td {
+  color: var(--texte);
+  font-size: 0.96rem;
+}
+    
     .zone-filtres {
       display: grid;
       grid-template-columns: repeat(4, minmax(180px, 1fr));
@@ -304,7 +337,29 @@
       </p>
     </section>
 
+<section>
+  <h2>Formations déjà créées</h2>
 
+  <div class="tableau-formations">
+    <table>
+      <thead>
+        <tr>
+          <th>Formation</th>
+          <th>Lieu associé</th>
+        </tr>
+      </thead>
+      <tbody id="tableau-formations-creees">
+        <tr class="ligne-vide">
+          <td colspan="2">Aucune formation à afficher pour le moment.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="info-aide">
+    Ce tableau servira à afficher les formations déjà enregistrées.
+  </p>
+</section>
     
     <section>
       <h2>Filtres</h2>
