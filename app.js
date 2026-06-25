@@ -387,7 +387,12 @@ async function chargerFormationsDansRecap() {
 
   const { data, error } = await sb
     .from('formations')
-    .select('nom, lieux(nom)')
+    .select(`
+      nom,
+      lieux (
+        nom
+      )
+    `)
 
   if (error) {
     console.error('Erreur chargement formations :', error.message)
