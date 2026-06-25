@@ -332,4 +332,51 @@ function initialiserCouleursConfig() {
 }
 
 initialiserCouleursConfig()
+
+function getInfosSemaineISO(date = new Date()) {
+  const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
+  const dayNum = d.getUTCDay() || 7
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum)
+
+  const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
+  const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+
+  return {
+    annee: d.getUTCFullYear(),
+    semaine: weekNo
+  }
+}
+
+function afficherSemaineDansRecap() {
+  if (currentPageName() !== 'recap.html') return
+
+  const info = getInfosSemaineISO(new Date())
+  const semaineCourante = info.semaine
+  const semaineSuivante = semaineCourante === 52 ? 1 : semaineCourante + 1
+
+  const elCourante = document.getElementById('resume-semaine-courante')
+  const elSuivante = document.getElementById('resume-semaine-suivante')
+
+  if (elCourante) {
+    elCourante.textContent = `Nous sommes actuellement en semaine ${semaineCourante}.`
+  }
+
+  if (elSuivante) {
+    elSuivante.textContent = `La semaine suivante est la semaine ${semaineSuivante}.`
+  }
+}
+
+function preselectionnerSemaineDansSaisie() {
+  if (currentPageName() !== 'saisie.html') return
+
+  const selectSemaine = document.getElementById('semaine')
+  if (!selectSemaine) return
+
+  const info = getInfosSemaineISO(new Date())
+  selectSemaine.value = String(info.semaine)
+}
+
+afficherSemaineDansRecap()
+preselectionnerSemaineDansSaisie()
+
 protectCurrentPage()
