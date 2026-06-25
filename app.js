@@ -387,7 +387,7 @@ async function chargerFormationsDansRecap() {
 
   const { data, error } = await sb
     .from('formations')
-    .select('nom, lieu')
+    .select('nom, lieux(nom)')
 
   if (error) {
     console.error('Erreur chargement formations :', error.message)
@@ -411,11 +411,10 @@ async function chargerFormationsDansRecap() {
   tbody.innerHTML = data.map((formation) => `
     <tr>
       <td>${formation.nom || ''}</td>
-      <td>${formation.lieu || ''}</td>
+      <td>${formation.lieux?.nom || ''}</td>
     </tr>
   `).join('')
 }
-
 chargerFormationsDansRecap()
 async function chargerLieuxDansConfig() {
   if (currentPageName() !== 'config.html') return
