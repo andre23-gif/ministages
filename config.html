@@ -239,18 +239,23 @@
         </p>
 
         <p>
-  <label for="lieu-formation">Lieu associé</label>
-  <select id="lieu-formation" name="lieu-formation">
-    <option value="">Choisir un lieu</option>
-  </select>
-</p>
+          <label for="lieu-formation">Nom du lieu</label>
+          <input
+            type="text"
+            id="lieu-formation"
+            name="lieu-formation"
+            placeholder="Nom du lieu"
+          />
+        </p>
 
-      <button type="button" id="btn-ajouter-formation">Ajouter</button>
+        <button type="button" id="btn-ajouter-formation">Ajouter</button>
       </form>
-<p id="message-formation" class="info-aide"></p>
-      
+
+      <p id="message-formation" class="info-aide"></p>
+
       <p class="info-aide">
-        Cette zone sert à créer une formation et à lui associer un lieu.
+        Saisissez le nom de la formation et le nom du lieu. Si le lieu existe déjà,
+        il sera réutilisé. Sinon, il sera créé automatiquement.
       </p>
     </section>
 
