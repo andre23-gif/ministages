@@ -417,5 +417,30 @@ async function chargerFormationsDansRecap() {
 }
 
 chargerFormationsDansRecap()
+async function chargerLieuxDansConfig() {
+  if (currentPageName() !== 'config.html') return
 
+  const selectLieu = document.getElementById('lieu-formation')
+  if (!selectLieu) return
+
+  const { data, error } = await sb
+    .from('lieux')
+    .select('id, nom')
+
+  if (error) {
+    console.error('Erreur chargement lieux :', error.message)
+    return
+  }
+
+  selectLieu.innerHTML = '<option value="">Choisir un lieu</option>'
+
+  data.forEach((lieu) => {
+    const option = document.createElement('option')
+    option.value = lieu.id
+    option.textContent = lieu.nom
+    selectLieu.appendChild(option)
+  })
+}
+
+chargerLieuxDansConfig()
 protectCurrentPage()
