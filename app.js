@@ -331,8 +331,6 @@ function initialiserCouleursConfig() {
   chargerCouleursClasses()
 }
 
-initialiserCouleursConfig()
-
 function getInfosSemaineISO(date = new Date()) {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
   const dayNum = d.getUTCDay() || 7
@@ -376,9 +374,6 @@ function preselectionnerSemaineDansSaisie() {
   selectSemaine.value = String(info.semaine)
 }
 
-afficherSemaineDansRecap()
-preselectionnerSemaineDansSaisie()
-
 async function chargerFormationsDansRecap() {
   if (currentPageName() !== 'recap.html') return
 
@@ -389,7 +384,7 @@ async function chargerFormationsDansRecap() {
     .from('formations')
     .select(`
       nom,
-      lieux (
+      lieux:lieu_id (
         nom
       )
     `)
@@ -420,7 +415,7 @@ async function chargerFormationsDansRecap() {
     </tr>
   `).join('')
 }
-chargerFormationsDansRecap()
+
 async function chargerLieuxDansConfig() {
   if (currentPageName() !== 'config.html') return
 
@@ -446,7 +441,21 @@ async function chargerLieuxDansConfig() {
   })
 }
 
-chargerLieuxDansConfig()
+function marquerRecapARecharger() {
+  sessionStorage.setItem('recharger_formations_recap', 'oui')
+}
+
+function verifierRechargementFormationsRecap() {
+  if (currentPageName() !== 'recap.html') return
+
+  const doitRecharger = sessionStorage.getItem('recharger_formations_recap')
+
+  if (doitRecharger === 'oui') {
+    sessionStorage.removeItem('recharger_formations_recap')
+    chargerFormationsDansRecap()
+  }
+}
+
 async function initialiserAjoutFormationConfig() {
   if (currentPageName() !== 'config.html') return
 
@@ -509,15 +518,20 @@ async function initialiserAjoutFormationConfig() {
       message.style.color = '#166534'
     }
 
+    marquerRecapARecharger()
+
     inputNom.value = ''
     selectLieu.value = ''
 
-    if (typeof chargerFormationsDansRecap === 'function') {
-      chargerFormationsDansRecap()
-    }
+    chargerFormationsDansRecap()
   })
 }
 
+initialiserCouleursConfig()
+afficherSemaineDansRecap()
+preselectionnerSemaineDansSaisie()
+chargerFormationsDansRecap()
+chargerLieuxDansConfig()
 initialiserAjoutFormationConfig()
-
+verifierRechargementFormationsRecap()
 protectCurrentPage()
