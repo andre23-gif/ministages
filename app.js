@@ -379,4 +379,43 @@ function preselectionnerSemaineDansSaisie() {
 afficherSemaineDansRecap()
 preselectionnerSemaineDansSaisie()
 
+async function chargerFormationsDansRecap() {
+  if (currentPageName() !== 'recap.html') return
+
+  const tbody = document.getElementById('tableau-formations-creees')
+  if (!tbody) return
+
+  const { data, error } = await sb
+    .from('formations')
+    .select('nom, lieu')
+
+  if (error) {
+    console.error('Erreur chargement formations :', error.message)
+    tbody.innerHTML = `
+      <tr class="ligne-vide">
+        <td colspan="2">Impossible de charger les formations.</td>
+      </tr>
+    `
+    return
+  }
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = `
+      <tr class="ligne-vide">
+        <td colspan="2">Aucune formation à afficher pour le moment.</td>
+      </tr>
+    `
+    return
+  }
+
+  tbody.innerHTML = data.map((formation) => `
+    <tr>
+      <td>${formation.nom || ''}</td>
+      <td>${formation.lieu || ''}</td>
+    </tr>
+  `).join('')
+}
+
+chargerFormationsDansRecap()
+
 protectCurrentPage()
