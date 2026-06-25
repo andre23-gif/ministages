@@ -456,28 +456,67 @@ function verifierRechargementFormationsRecap() {
   }
 }
 
+async function trouverOuCreerLieu(nomLieu, createdBy = null) {
+  const nomNettoye = nomLieu.trim()
+
+  if (!nomNettoye) return null
+
+  const { data: lieuxExistants, error: erreurLecture } = await sb
+    .from('lieux')
+    .select('id, nom')
+    .eq('nom', nomNettoye)
+
+  if (erreurLecture) {
+    throw new Error(`Erreur recherche lieu : ${erreurLecture.message}`)
+  }
+
+  if (lieuxExistants && lieuxExistants.length > 0) {
+    return lieuxExistants[0].id
+  }
+
+  const { data: nouveauLieu, error: erreurCreation } = await sb
+    .from('lieux')
+    .insert([
+      {
+        nom: nomNettoye,
+        created_by: createdBy
+      }
+    ])
+    .select('id')
+
+  if (erreurCreation) {
+    throw new Error(`Erreur création lieu : ${erreurCreation.message}`)
+  }
+
+  if (!nouveauLieu || nouveauLieu.length === 0) {
+    throw new Error('Le lieu a été créé mais son identifiant est introuvable.')
+  }
+
+  return nouveauLieu[0].id
+}
+
 async function initialiserAjoutFormationConfig() {
   if (currentPageName() !== 'config.html') return
 
   const inputNom = document.getElementById('nom-formation')
-  const selectLieu = document.getElementById('lieu-formation')
+  const inputLieu = document.getElementById('lieu-formation')
   const boutonAjouter = document.getElementById('btn-ajouter-formation')
   const message = document.getElementById('message-formation')
 
-  if (!inputNom || !selectLieu || !boutonAjouter) return
+  if (!inputNom || !inputLieu || !boutonAjouter) return
 
   boutonAjouter.addEventListener('click', async () => {
     const nomFormation = inputNom.value.trim()
-    const lieuId = selectLieu.value
+    const nomLieu = inputLieu.value.trim()
 
     if (message) {
       message.textContent = ''
       message.style.color = '#475569'
     }
 
-    if (!nomFormation || !lieuId) {
+    if (!nomFormation || !nomLieu) {
       if (message) {
-        message.textContent = 'Merci de saisir un nom de formation et de choisir un lieu.'
+        message.textContent = 'Merci de saisir un nom de formation et un nom de lieu.'
         message.style.color = '#b91c1c'
       }
       return
@@ -495,35 +534,43 @@ async function initialiserAjoutFormationConfig() {
 
     const createdBy = userData?.user?.email || null
 
-    const { error } = await sb
-      .from('formations')
-      .insert([
-        {
-          nom: nomFormation,
-          lieu_id: Number(lieuId),
-          created_by: createdBy
-        }
-      ])
+    try {
+      const lieuId = await trouverOuCreerLieu(nomLieu, createdBy)
 
-    if (error) {
+      const { error: erreurFormation } = await sb
+        .from('formations')
+        .insert([
+          {
+            nom: nomFormation,
+            lieu_id: Number(lieuId),
+            created_by: createdBy
+          }
+        ])
+
+      if (erreurFormation) {
+        if (message) {
+          message.textContent = `Erreur enregistrement formation : ${erreurFormation.message}`
+          message.style.color = '#b91c1c'
+        }
+        return
+      }
+
       if (message) {
-        message.textContent = `Erreur enregistrement formation : ${error.message}`
+        message.textContent = 'Formation et lieu enregistrés avec succès.'
+        message.style.color = '#166534'
+      }
+
+      marquerRecapARecharger()
+
+      inputNom.value = ''
+      inputLieu.value = ''
+
+    } catch (err) {
+      if (message) {
+        message.textContent = err.message || 'Une erreur est survenue.'
         message.style.color = '#b91c1c'
       }
-      return
     }
-
-    if (message) {
-      message.textContent = 'Formation enregistrée avec succès.'
-      message.style.color = '#166534'
-    }
-
-    marquerRecapARecharger()
-
-    inputNom.value = ''
-    selectLieu.value = ''
-
-    chargerFormationsDansRecap()
   })
 }
 
