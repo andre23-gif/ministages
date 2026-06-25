@@ -6,294 +6,44 @@
   <title>Récapitulatif des mini-stages</title>
   <link rel="stylesheet" href="style.css" />
 
-<link rel="manifest" href="manifest.json" />
-<link rel="apple-touch-icon" href="icon-192.png" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="theme-color" content="#2563eb" />
-  
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#2563eb" />
+
   <style>
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .header-text {
-      flex: 1;
-      min-width: 260px;
-    }
-
-    .header-user {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      min-width: 220px;
-    }
-
-    .header-user p {
-      margin: 0;
-      color: white;
-      font-weight: 600;
-      text-align: right;
-    }
-
-    .header-user button {
-      margin: 0;
-    }
-
-    .bandeau-semaines {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(240px, 1fr));
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .resume-semaine {
-      border-radius: 18px;
-      padding: 20px;
-      box-shadow: var(--ombre);
-      color: var(--blanc);
-    }
-
-    .resume-semaine h3 {
-      margin: 0 0 8px 0;
-      font-size: 1.2rem;
-    }
-
-    .resume-semaine p {
-      margin: 0;
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 1rem;
-    }
-
-    .resume-semaine.bleu {
-      background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-fonce) 100%);
-    }
-
-    .resume-semaine.jaune {
-      background: linear-gradient(135deg, var(--jaune) 0%, var(--jaune-fonce) 100%);
-      color: #3f3f46;
-    }
-
-    .resume-semaine.jaune h3,
-    .resume-semaine.jaune p {
-      color: #3f3f46;
-    }
-
-.tableau-formations {
-  overflow-x: auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  background: var(--blanc);
-}
-
-.tableau-formations table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 700px;
-}
-
-.tableau-formations th,
-.tableau-formations td {
-  padding: 14px 12px;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.tableau-formations th {
-  background: #eff6ff;
-  color: var(--bleu-fonce);
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-
-.tableau-formations td {
-  color: var(--texte);
-  font-size: 0.96rem;
-}
-    
-    .zone-filtres {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(180px, 1fr));
-      gap: 16px;
-      align-items: end;
-    }
-
-    .zone-filtres p {
-      margin: 0;
-    }
-
-    .zone-filtres label {
-      display: inline-block;
-      margin-bottom: 8px;
-      font-weight: 700;
-      color: var(--bleu-fonce);
-    }
-
-    .zone-filtres select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--bordure);
-      border-radius: 14px;
-      font-size: 1rem;
-      background: var(--blanc);
-      color: var(--texte);
-      box-sizing: border-box;
-    }
-
-    .zone-filtres select:focus {
-      outline: none;
-      border-color: var(--bleu);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-    }
-
-    .zone-filtres button {
-      width: 100%;
-      margin: 0;
-    }
-
-    .tableau-stages {
+    .tableau-formations {
       overflow-x: auto;
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--bordure);
       border-radius: 16px;
       background: var(--blanc);
     }
 
-    .tableau-stages table {
+    .tableau-formations table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 1200px;
+      min-width: 700px;
     }
 
-    .tableau-stages th,
-    .tableau-stages td {
+    .tableau-formations th,
+    .tableau-formations td {
       padding: 14px 12px;
       text-align: left;
       vertical-align: middle;
-      border-bottom: 1px solid #e5e7eb;
+      border-bottom: 1px solid var(--bordure);
     }
 
-    .tableau-stages th {
-      background: #eff6ff;
+    .tableau-formations th {
+      background: var(--bleu-tres-clair);
       color: var(--bleu-fonce);
       font-size: 0.95rem;
       font-weight: 700;
     }
 
-    .tableau-stages td {
+    .tableau-formations td {
       color: var(--texte);
       font-size: 0.96rem;
-    }
-
-    .tableau-stages select {
-      width: 100%;
-      min-width: 180px;
-      padding: 10px 12px;
-      border: 1px solid var(--bordure);
-      border-radius: 12px;
-      background: var(--blanc);
-      font-size: 0.96rem;
-      color: var(--texte);
-      box-sizing: border-box;
-    }
-
-    .tableau-stages select:focus {
-      outline: none;
-      border-color: var(--bleu);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-    }
-
-    .badge-classe {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 62px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      color: white;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .classe-1 { background: #2563eb; }
-    .classe-2 { background: #f59e0b; }
-    .classe-3 { background: #16a34a; }
-    .classe-4 { background: #ef4444; }
-    .classe-5 { background: #a855f7; }
-    .classe-6 { background: #f97316; }
-    .classe-7 { background: #0ea5e9; }
-
-    .ligne-vide td {
-      text-align: center;
-      color: var(--texte-secondaire);
-      padding: 24px 16px;
-      font-style: italic;
-    }
-
-    .info-aide {
-      font-size: 0.96rem;
-      color: var(--texte-secondaire);
-      line-height: 1.6;
-      margin-top: 10px;
-    }
-
-    .actions-bas {
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-      padding-top: 12px;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    .actions-bas button {
-      margin: 0;
-    }
-
-    .btn-supprimer {
-      background: #fee2e2;
-      color: #991b1b;
-      border: none;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    @media (max-width: 900px) {
-      .header-top {
-        flex-direction: column;
-      }
-
-      .header-user {
-        align-items: flex-start;
-      }
-
-      .header-user p {
-        text-align: left;
-      }
-
-      .bandeau-semaines {
-        grid-template-columns: 1fr;
-      }
-
-      .zone-filtres {
-        grid-template-columns: 1fr;
-      }
-
-      .actions-bas {
-        flex-direction: column;
-      }
-
-      .actions-bas button {
-        width: 100%;
-      }
     }
   </style>
 </head>
@@ -333,34 +83,34 @@
       </div>
 
       <p class="info-aide">
-        Cette zone affichera plus tard les données réelles calculées depuis Supabase.
+        Cette zone est mise à jour automatiquement par app.js.
       </p>
     </section>
 
-<section>
-  <h2>Formations déjà créées</h2>
+    <section>
+      <h2>Formations déjà créées</h2>
 
-  <div class="tableau-formations">
-    <table>
-      <thead>
-        <tr>
-          <th>Formation</th>
-          <th>Lieu associé</th>
-        </tr>
-      </thead>
-      <tbody id="tableau-formations-creees">
-        <tr class="ligne-vide">
-          <td colspan="2">Aucune formation à afficher pour le moment.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+      <div class="tableau-formations">
+        <table>
+          <thead>
+            <tr>
+              <th>Formation</th>
+              <th>Lieu associé</th>
+            </tr>
+          </thead>
+          <tbody id="tableau-formations-creees">
+            <tr class="ligne-vide">
+              <td colspan="2">Aucune formation à afficher pour le moment.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <p class="info-aide">
-    Ce tableau servira à afficher les formations déjà enregistrées.
-  </p>
-</section>
-    
+      <p class="info-aide">
+        Ce tableau affiche les formations déjà enregistrées avec leur lieu associé.
+      </p>
+    </section>
+
     <section>
       <h2>Filtres</h2>
 
@@ -369,13 +119,13 @@
           <label for="filtre-classe">Classe</label>
           <select id="filtre-classe">
             <option value="">Toutes les classes</option>
-            <option>3°1</option>
-            <option>3°2</option>
-            <option>3°3</option>
-            <option>3°4</option>
-            <option>3°5</option>
-            <option>3°6</option>
-            <option>3°7</option>
+            <option value="3°1">3°1</option>
+            <option value="3°2">3°2</option>
+            <option value="3°3">3°3</option>
+            <option value="3°4">3°4</option>
+            <option value="3°5">3°5</option>
+            <option value="3°6">3°6</option>
+            <option value="3°7">3°7</option>
           </select>
         </p>
 
@@ -394,7 +144,7 @@
         </p>
 
         <p>
-          <button type="button">Filtrer</button>
+          <button type="button" id="btn-filtrer">Filtrer</button>
         </p>
       </div>
     </section>
@@ -442,3 +192,4 @@
   <script src="app.js"></script>
 </body>
 </html>
+``
