@@ -59,6 +59,17 @@ function showPasswordRecoveryBlock() {
   block.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
+function libelleDepuisCouleur(hex) {
+  const entree = Object.entries(COULEURS_PAR_LIBELLE).find(
+    ([, valeur]) => valeur.toLowerCase() === String(hex || '').toLowerCase()
+  )
+  return entree ? entree[0] : null
+}
+
+function pastilleIdDepuisClasse(classe) {
+  return `pastille-${classe.replace('°', '-').replace(/\s+/g, '').replace(/\./g, '')}`
+}
+
 /* --------------------------------------------------
    AUTHENTIFICATION
 -------------------------------------------------- */
@@ -262,17 +273,6 @@ if (updatePasswordForm) {
    COULEURS DES CLASSES
 -------------------------------------------------- */
 
-function libelleDepuisCouleur(hex) {
-  const entree = Object.entries(COULEURS_PAR_LIBELLE).find(
-    ([, valeur]) => valeur.toLowerCase() === String(hex || '').toLowerCase()
-  )
-  return entree ? entree[0] : null
-}
-
-function pastilleIdDepuisClasse(classe) {
-  return `pastille-${classe.replace('°', '-').replace(/\s+/g, '').replace(/\./g, '')}`
-}
-
 function appliquerCouleurDansUI(classe, couleurHex) {
   const select = document.querySelector(`.classes-couleurs select[data-classe="${classe}"]`)
   const pastille = document.getElementById(pastilleIdDepuisClasse(classe))
@@ -454,7 +454,7 @@ function verifierRechargementFormationsRecap() {
 }
 
 /* --------------------------------------------------
-   CONFIG : OPTION A (FORMATION + LIEU SAISIS EN TEXTE)
+   CONFIGURATION : FORMATION + LIEU (OPTION A)
 -------------------------------------------------- */
 
 async function trouverOuCreerLieu(nomLieu, createdBy = null) {
@@ -506,7 +506,7 @@ async function verifierDoublonFormation(nomFormation, lieuId) {
     throw new Error(`Erreur vérification doublon formation : ${error.message}`)
   }
 
-  return data && data.length > 0
+  return !!(data && data.length > 0)
 }
 
 async function initialiserAjoutFormationConfig() {
@@ -674,6 +674,218 @@ function initialiserFiltreFormationsDansSaisie() {
 }
 
 /* --------------------------------------------------
+   SAISIE : ENREGISTREMENT DES MINI-STAGES
+-------------------------------------------------- */
+
+async function trouverIdClasseParNom(nomClasse) {
+  const { data, error } = await sb
+    .from('classes')
+    .select('id, nom')
+    .eq('nom', nomClasse)
+
+  if (error) {
+    throw new Error(`Erreur recherche classe : ${error.message}`)
+  }
+
+  if (!data || data.length === 0) {
+    throw new Error(`Classe introuvable : ${nomClasse}`)
+  }
+
+  return data[0].id
+}
+
+async function initialiserEnregistrementMiniStage() {
+  if (currentPageName() !== 'saisie.html') return
+
+  const form = document.getElementById('form-saisie-mini-stage') || document.querySelector('.page-form')
+  const message = document.getElementById('message-saisie')
+
+  if (!form) return
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const classeNom = document.getElementById('classe')?.value || ''
+    const semaine = document.getElementById('semaine')?.value || ''
+    const nom = document.getElementById('nom')?.value.trim() || ''
+    const prenom = document.getElementById('prenom')?.value.trim() || ''
+    const dateStage = document.getElementById('date_stage')?.value || ''
+    const heureDebut = document.getElementById('heure_debut')?.value || ''
+    const heureFin = document.getElementById('heure_fin')?.value || ''
+    const lieuId = document.getElementById('lieu')?.value || ''
+    const formationId = document.getElementById('formation')?.value || ''
+    const etatConvention = document.getElementById('etat_convention')?.value || '?'
+    const presenceStage = document.getElementById('presence_stage')?.value || '?'
+
+    if (message) {
+      message.textContent = ''
+      message.style.color = '#475569'
+    }
+
+    if (
+      !classeNom ||
+      !semaine ||
+      !nom ||
+      !prenom ||
+      !dateStage ||
+      !heureDebut ||
+      !heureFin ||
+      !lieuId ||
+      !formationId
+    ) {
+      if (message) {
+        message.textContent = 'Merci de remplir tous les champs obligatoires.'
+        message.style.color = '#b91c1c'
+      }
+      return
+    }
+
+    const { data: userData, error: userError } = await sb.auth.getUser()
+
+    if (userError) {
+      if (message) {
+        message.textContent = `Erreur utilisateur : ${userError.message}`
+        message.style.color = '#b91c1c'
+      }
+      return
+    }
+
+    const createdBy = userData?.user?.email || null
+
+    try {
+      const classeId = await trouverIdClasseParNom(classeNom)
+
+      const { error } = await sb
+        .from('mini_stages')
+        .insert([
+          {
+            classe_id: Number(classeId),
+            nom,
+            prenom,
+            semaine: Number(semaine),
+            date_stage: dateStage,
+            heure_debut: heureDebut,
+            heure_fin: heureFin,
+            lieu_id: Number(lieuId),
+            formation_id: Number(formationId),
+            etat_convention: etatConvention,
+            presence_stage: presenceStage,
+            created_by: createdBy
+          }
+        ])
+
+      if (error) {
+        if (message) {
+          message.textContent = `Erreur enregistrement mini-stage : ${error.message}`
+          message.style.color = '#b91c1c'
+        }
+        return
+      }
+
+      if (message) {
+        message.textContent = 'Mini-stage enregistré avec succès.'
+        message.style.color = '#166534'
+      }
+
+      form.reset()
+      preselectionnerSemaineDansSaisie()
+      await chargerLieuxDansSaisie()
+      await chargerFormationsDansSaisie('')
+    } catch (err) {
+      if (message) {
+        message.textContent = err.message || 'Une erreur est survenue.'
+        message.style.color = '#b91c1c'
+      }
+    }
+  })
+}
+
+/* --------------------------------------------------
+   RECAP : MINI-STAGES
+-------------------------------------------------- */
+
+function formaterDateFr(yyyyMmDd) {
+  if (!yyyyMmDd) return ''
+  const [annee, mois, jour] = String(yyyyMmDd).split('-')
+  if (!annee || !mois || !jour) return yyyyMmDd
+  return `${jour}/${mois}/${annee}`
+}
+
+async function chargerMiniStagesDansRecap() {
+  if (currentPageName() !== 'recap.html') return
+
+  const tbody = document.getElementById('tableau-mini-stages')
+  if (!tbody) return
+
+  const { data, error } = await sb
+    .from('mini_stages')
+    .select(`
+      nom,
+      prenom,
+      semaine,
+      date_stage,
+      heure_debut,
+      heure_fin,
+      etat_convention,
+      presence_stage,
+      classes (
+        nom,
+        couleur
+      ),
+      lieux (
+        nom
+      ),
+      formations (
+        nom
+      )
+    `)
+
+  if (error) {
+    console.error('Erreur chargement mini-stages :', error.message)
+    tbody.innerHTML = `
+      <tr class="ligne-vide">
+        <td colspan="10">Impossible de charger les mini-stages.</td>
+      </tr>
+    `
+    return
+  }
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = `
+      <tr class="ligne-vide">
+        <td colspan="10">Aucun mini-stage à afficher pour le moment.</td>
+      </tr>
+    `
+    return
+  }
+
+  tbody.innerHTML = data.map((stage) => {
+    const nomClasse = stage.classes?.nom || ''
+    const couleurClasse = stage.classes?.couleur || '#64748b'
+    const eleve = `${stage.nom || ''} ${stage.prenom || ''}`.trim()
+    const horaires = `${stage.heure_debut || ''} - ${stage.heure_fin || ''}`
+    const badgeClasse = nomClasse
+      ? `<span class="badge-classe" style="background:${couleurClasse};">${nomClasse}</span>`
+      : ''
+
+    return `
+      <tr>
+        <td>${eleve}</td>
+        <td>${badgeClasse}</td>
+        <td>${stage.semaine ?? ''}</td>
+        <td>${formaterDateFr(stage.date_stage)}</td>
+        <td>${horaires}</td>
+        <td>${stage.lieux?.nom || ''}</td>
+        <td>${stage.formations?.nom || ''}</td>
+        <td>${stage.etat_convention || ''}</td>
+        <td>${stage.presence_stage || ''}</td>
+        <td></td>
+      </tr>
+    `
+  }).join('')
+}
+
+/* --------------------------------------------------
    INITIALISATION GLOBALE
 -------------------------------------------------- */
 
@@ -687,8 +899,11 @@ async function initPage() {
   chargerFormationsDansRecap()
   verifierRechargementFormationsRecap()
   initialiserAjoutFormationConfig()
+
   await chargerLieuxDansSaisie()
   initialiserFiltreFormationsDansSaisie()
+  initialiserEnregistrementMiniStage()
+  chargerMiniStagesDansRecap()
 
   if (currentPageName() === 'saisie.html') {
     const selectLieu = document.getElementById('lieu')
