@@ -17,6 +17,10 @@ const COULEURS_PAR_LIBELLE = {
   Cyan: '#0ea5e9'
 }
 
+/* --------------------------------------------------
+   OUTILS GÉNÉRAUX
+-------------------------------------------------- */
+
 function setMessage(elementId, text, isError = false) {
   const el = document.getElementById(elementId)
   if (!el) return
@@ -55,30 +59,9 @@ function showPasswordRecoveryBlock() {
   block.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-function libelleDepuisCouleur(hex) {
-  const entree = Object.entries(COULEURS_PAR_LIBELLE).find(
-    ([, valeur]) => valeur.toLowerCase() === String(hex || '').toLowerCase()
-  )
-  return entree ? entree[0] : null
-}
-
-function pastilleIdDepuisClasse(classe) {
-  return `pastille-${classe.replace('°', '-').replace(/\s+/g, '').replace(/\./g, '')}`
-}
-
-function appliquerCouleurDansUI(classe, couleurHex) {
-  const select = document.querySelector(`.classes-couleurs select[data-classe="${classe}"]`)
-  const pastille = document.getElementById(pastilleIdDepuisClasse(classe))
-
-  if (pastille) {
-    pastille.style.background = couleurHex
-  }
-
-  const libelle = libelleDepuisCouleur(couleurHex)
-  if (select && libelle) {
-    select.value = libelle
-  }
-}
+/* --------------------------------------------------
+   AUTHENTIFICATION
+-------------------------------------------------- */
 
 async function protectCurrentPage() {
   const page = currentPageName()
@@ -279,6 +262,31 @@ if (updatePasswordForm) {
    COULEURS DES CLASSES
 -------------------------------------------------- */
 
+function libelleDepuisCouleur(hex) {
+  const entree = Object.entries(COULEURS_PAR_LIBELLE).find(
+    ([, valeur]) => valeur.toLowerCase() === String(hex || '').toLowerCase()
+  )
+  return entree ? entree[0] : null
+}
+
+function pastilleIdDepuisClasse(classe) {
+  return `pastille-${classe.replace('°', '-').replace(/\s+/g, '').replace(/\./g, '')}`
+}
+
+function appliquerCouleurDansUI(classe, couleurHex) {
+  const select = document.querySelector(`.classes-couleurs select[data-classe="${classe}"]`)
+  const pastille = document.getElementById(pastilleIdDepuisClasse(classe))
+
+  if (pastille) {
+    pastille.style.background = couleurHex
+  }
+
+  const libelle = libelleDepuisCouleur(couleurHex)
+  if (select && libelle) {
+    select.value = libelle
+  }
+}
+
 async function chargerCouleursClasses() {
   if (currentPageName() !== 'config.html') return
 
@@ -446,7 +454,7 @@ function verifierRechargementFormationsRecap() {
 }
 
 /* --------------------------------------------------
-   CONFIGURATION : FORMATION + LIEU (OPTION A)
+   CONFIG : OPTION A (FORMATION + LIEU SAISIS EN TEXTE)
 -------------------------------------------------- */
 
 async function trouverOuCreerLieu(nomLieu, createdBy = null) {
@@ -485,6 +493,20 @@ async function trouverOuCreerLieu(nomLieu, createdBy = null) {
   }
 
   return nouveauLieu[0].id
+}
+
+async function verifierDoublonFormation(nomFormation, lieuId) {
+  const { data, error } = await sb
+    .from('formations')
+    .select('id, nom')
+    .eq('nom', nomFormation)
+    .eq('lieu_id', Number(lieuId))
+
+  if (error) {
+    throw new Error(`Erreur vérification doublon formation : ${error.message}`)
+  }
+
+  return data && data.length > 0
 }
 
 async function initialiserAjoutFormationConfig() {
@@ -528,6 +550,15 @@ async function initialiserAjoutFormationConfig() {
 
     try {
       const lieuId = await trouverOuCreerLieu(nomLieu, createdBy)
+
+      const existeDeja = await verifierDoublonFormation(nomFormation, lieuId)
+      if (existeDeja) {
+        if (message) {
+          message.textContent = 'Cette formation existe déjà pour ce lieu.'
+          message.style.color = '#b91c1c'
+        }
+        return
+      }
 
       const { error: erreurFormation } = await sb
         .from('formations')
@@ -656,7 +687,7 @@ async function initPage() {
   chargerFormationsDansRecap()
   verifierRechargementFormationsRecap()
   initialiserAjoutFormationConfig()
-  chargerLieuxDansSaisie()
+  await chargerLieuxDansSaisie()
   initialiserFiltreFormationsDansSaisie()
 
   if (currentPageName() === 'saisie.html') {
