@@ -82,19 +82,21 @@ function appliquerCouleurDansUI(classe, couleurHex) {
 
 async function protectCurrentPage() {
   const page = currentPageName()
-  if (!isProtectedPage(page)) return
+  if (!isProtectedPage(page)) return true
 
   const { data, error } = await sb.auth.getUser()
 
   if (error || !data?.user) {
     goToAuth()
-    return
+    return false
   }
 
   const userEmailEl = document.getElementById('user-email')
   if (userEmailEl) {
     userEmailEl.textContent = data.user.email || ''
   }
+
+  return true
 }
 
 async function logoutUser() {
@@ -273,6 +275,10 @@ if (updatePasswordForm) {
   })
 }
 
+/* --------------------------------------------------
+   COULEURS DES CLASSES
+-------------------------------------------------- */
+
 async function chargerCouleursClasses() {
   if (currentPageName() !== 'config.html') return
 
@@ -331,6 +337,10 @@ function initialiserCouleursConfig() {
   chargerCouleursClasses()
 }
 
+/* --------------------------------------------------
+   SEMAINES
+-------------------------------------------------- */
+
 function getInfosSemaineISO(date = new Date()) {
   const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
   const dayNum = d.getUTCDay() || 7
@@ -374,6 +384,10 @@ function preselectionnerSemaineDansSaisie() {
   selectSemaine.value = String(info.semaine)
 }
 
+/* --------------------------------------------------
+   FORMATIONS DANS RECAP
+-------------------------------------------------- */
+
 async function chargerFormationsDansRecap() {
   if (currentPageName() !== 'recap.html') return
 
@@ -384,7 +398,7 @@ async function chargerFormationsDansRecap() {
     .from('formations')
     .select(`
       nom,
-      lieux:lieu_id (
+      lieux!formations_lieu_id_fkey (
         nom
       )
     `)
@@ -416,31 +430,6 @@ async function chargerFormationsDansRecap() {
   `).join('')
 }
 
-async function chargerLieuxDansConfig() {
-  if (currentPageName() !== 'config.html') return
-
-  const selectLieu = document.getElementById('lieu-formation')
-  if (!selectLieu) return
-
-  const { data, error } = await sb
-    .from('lieux')
-    .select('id, nom')
-
-  if (error) {
-    console.error('Erreur chargement lieux :', error.message)
-    return
-  }
-
-  selectLieu.innerHTML = '<option value="">Choisir un lieu</option>'
-
-  data.forEach((lieu) => {
-    const option = document.createElement('option')
-    option.value = lieu.id
-    option.textContent = lieu.nom
-    selectLieu.appendChild(option)
-  })
-}
-
 function marquerRecapARecharger() {
   sessionStorage.setItem('recharger_formations_recap', 'oui')
 }
@@ -456,9 +445,12 @@ function verifierRechargementFormationsRecap() {
   }
 }
 
+/* --------------------------------------------------
+   CONFIGURATION : FORMATION + LIEU (OPTION A)
+-------------------------------------------------- */
+
 async function trouverOuCreerLieu(nomLieu, createdBy = null) {
   const nomNettoye = nomLieu.trim()
-
   if (!nomNettoye) return null
 
   const { data: lieuxExistants, error: erreurLecture } = await sb
@@ -564,7 +556,6 @@ async function initialiserAjoutFormationConfig() {
 
       inputNom.value = ''
       inputLieu.value = ''
-
     } catch (err) {
       if (message) {
         message.textContent = err.message || 'Une erreur est survenue.'
@@ -574,11 +565,108 @@ async function initialiserAjoutFormationConfig() {
   })
 }
 
-initialiserCouleursConfig()
-afficherSemaineDansRecap()
-preselectionnerSemaineDansSaisie()
-chargerFormationsDansRecap()
-chargerLieuxDansConfig()
-initialiserAjoutFormationConfig()
-verifierRechargementFormationsRecap()
-protectCurrentPage()
+/* --------------------------------------------------
+   SAISIE : LIEUX ET FORMATIONS
+-------------------------------------------------- */
+
+async function chargerLieuxDansSaisie() {
+  if (currentPageName() !== 'saisie.html') return
+
+  const selectLieu = document.getElementById('lieu')
+  if (!selectLieu) return
+
+  const { data, error } = await sb
+    .from('lieux')
+    .select('id, nom')
+
+  if (error) {
+    console.error('Erreur chargement lieux dans saisie :', error.message)
+    return
+  }
+
+  selectLieu.innerHTML = '<option value="">Choisir un lieu</option>'
+
+  data.forEach((lieu) => {
+    const option = document.createElement('option')
+    option.value = lieu.id
+    option.textContent = lieu.nom
+    selectLieu.appendChild(option)
+  })
+}
+
+async function chargerFormationsDansSaisie(lieuId = '') {
+  if (currentPageName() !== 'saisie.html') return
+
+  const selectFormation = document.getElementById('formation')
+  if (!selectFormation) return
+
+  if (!lieuId) {
+    selectFormation.innerHTML = '<option value="">Choisir d’abord un lieu</option>'
+    return
+  }
+
+  const { data, error } = await sb
+    .from('formations')
+    .select('id, nom')
+    .eq('lieu_id', Number(lieuId))
+
+  if (error) {
+    console.error('Erreur chargement formations dans saisie :', error.message)
+    selectFormation.innerHTML = '<option value="">Impossible de charger les formations</option>'
+    return
+  }
+
+  if (!data || data.length === 0) {
+    selectFormation.innerHTML = '<option value="">Aucune formation pour ce lieu</option>'
+    return
+  }
+
+  selectFormation.innerHTML = '<option value="">Choisir une formation</option>'
+
+  data.forEach((formation) => {
+    const option = document.createElement('option')
+    option.value = formation.id
+    option.textContent = formation.nom
+    selectFormation.appendChild(option)
+  })
+}
+
+function initialiserFiltreFormationsDansSaisie() {
+  if (currentPageName() !== 'saisie.html') return
+
+  const selectLieu = document.getElementById('lieu')
+  if (!selectLieu) return
+
+  selectLieu.addEventListener('change', () => {
+    chargerFormationsDansSaisie(selectLieu.value)
+  })
+}
+
+/* --------------------------------------------------
+   INITIALISATION GLOBALE
+-------------------------------------------------- */
+
+async function initPage() {
+  const autorise = await protectCurrentPage()
+  if (!autorise && isProtectedPage(currentPageName())) return
+
+  initialiserCouleursConfig()
+  afficherSemaineDansRecap()
+  preselectionnerSemaineDansSaisie()
+  chargerFormationsDansRecap()
+  verifierRechargementFormationsRecap()
+  initialiserAjoutFormationConfig()
+  chargerLieuxDansSaisie()
+  initialiserFiltreFormationsDansSaisie()
+
+  if (currentPageName() === 'saisie.html') {
+    const selectLieu = document.getElementById('lieu')
+    if (selectLieu && selectLieu.value) {
+      chargerFormationsDansSaisie(selectLieu.value)
+    } else {
+      chargerFormationsDansSaisie('')
+    }
+  }
+}
+
+initPage()
