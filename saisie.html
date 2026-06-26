@@ -4,137 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Saisie d'un mini-stage</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 
-<link rel="manifest" href="manifest.json" />
-<link rel="apple-touch-icon" href="icon-192.png" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="default" />
-<meta name="theme-color" content="#2563eb" />
-  
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#2563eb" />
+
   <style>
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .header-text {
-      flex: 1;
-      min-width: 260px;
-    }
-
-    .header-user {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-      min-width: 220px;
-    }
-
-    .header-user p {
-      margin: 0;
-      color: white;
-      font-weight: 600;
-      text-align: right;
-    }
-
-    .header-user button {
-      margin: 0;
-    }
-
-    .page-form {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(240px, 1fr));
-      gap: 18px 20px;
-      align-items: end;
-    }
-
-    .page-form p {
-      margin: 0;
-    }
-
-    .page-form label {
-      display: inline-block;
-      margin-bottom: 8px;
-      font-weight: 700;
-      color: var(--bleu-fonce);
-      font-size: 0.98rem;
-    }
-
-    .page-form input,
-    .page-form select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid var(--bordure);
-      border-radius: 14px;
-      font-size: 1rem;
-      color: var(--texte);
-      background: var(--blanc);
-      box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
-      box-sizing: border-box;
-    }
-
-    .page-form input:focus,
-    .page-form select:focus {
-      outline: none;
-      border-color: var(--bleu);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
-    }
-
-    .page-form .large {
-      grid-column: 1 / -1;
-    }
-
-    .form-actions {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: flex-end;
-      gap: 12px;
+    .page-form-message {
       margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid #e5e7eb;
-    }
-
-    .form-actions button {
-      margin: 0;
-    }
-
-    @media (max-width: 800px) {
-      .page-form {
-        grid-template-columns: 1fr;
-      }
-
-      .page-form .large,
-      .form-actions {
-        grid-column: auto;
-      }
-
-      .header-top {
-        flex-direction: column;
-      }
-
-      .header-user {
-        align-items: flex-start;
-      }
-
-      .header-user p {
-        text-align: left;
-      }
-
-      .form-actions {
-        flex-direction: column;
-      }
-
-      .form-actions button {
-        width: 100%;
-      }
     }
   </style>
 </head>
-
 <body>
   <header>
     <div class="header-top">
@@ -158,138 +41,138 @@
     <section>
       <h2>Nouvelle fiche élève</h2>
 
-      <form class="page-form">
+      <form class="page-form" onsubmit="return false;">
         <p>
-          <label for="classe">Classe</label><br>
+          <label for="classe">Classe</label>
           <select id="classe" name="classe">
             <option value="">Choisir une classe</option>
-            <option>3°1</option>
-            <option>3°2</option>
-            <option>3°3</option>
-            <option>3°4</option>
-            <option>3°5</option>
-            <option>3°6</option>
-            <option>3°7</option>
+            <option value="3°1">3°1</option>
+            <option value="3°2">3°2</option>
+            <option value="3°3">3°3</option>
+            <option value="3°4">3°4</option>
+            <option value="3°5">3°5</option>
+            <option value="3°6">3°6</option>
+            <option value="3°7">3°7</option>
           </select>
         </p>
 
         <p>
-          <label for="semaine">Semaine</label><br>
+          <label for="semaine">Semaine</label>
           <select id="semaine" name="semaine">
-  <option value="">Choisir une semaine</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
-  <option value="9">9</option>
-  <option value="10">10</option>
-  <option value="11">11</option>
-  <option value="12">12</option>
-  <option value="13">13</option>
-  <option value="14">14</option>
-  <option value="15">15</option>
-  <option value="16">16</option>
-  <option value="17">17</option>
-  <option value="18">18</option>
-  <option value="19">19</option>
-  <option value="20">20</option>
-  <option value="21">21</option>
-  <option value="22">22</option>
-  <option value="23">23</option>
-  <option value="24">24</option>
-  <option value="25">25</option>
-  <option value="26">26</option>
-  <option value="27">27</option>
-  <option value="28">28</option>
-  <option value="29">29</option>
-  <option value="30">30</option>
-  <option value="31">31</option>
-  <option value="32">32</option>
-  <option value="33">33</option>
-  <option value="34">34</option>
-  <option value="35">35</option>
-  <option value="36">36</option>
-  <option value="37">37</option>
-  <option value="38">38</option>
-  <option value="39">39</option>
-  <option value="40">40</option>
-  <option value="41">41</option>
-  <option value="42">42</option>
-  <option value="43">43</option>
-  <option value="44">44</option>
-  <option value="45">45</option>
-  <option value="46">46</option>
-  <option value="47">47</option>
-  <option value="48">48</option>
-  <option value="49">49</option>
-  <option value="50">50</option>
-  <option value="51">51</option>
-  <option value="52">52</option>
-</select>
+            <option value="">Choisir une semaine</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+            <option value="21">21</option>
+            <option value="22">22</option>
+            <option value="23">23</option>
+            <option value="24">24</option>
+            <option value="25">25</option>
+            <option value="26">26</option>
+            <option value="27">27</option>
+            <option value="28">28</option>
+            <option value="29">29</option>
+            <option value="30">30</option>
+            <option value="31">31</option>
+            <option value="32">32</option>
+            <option value="33">33</option>
+            <option value="34">34</option>
+            <option value="35">35</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+            <option value="46">46</option>
+            <option value="47">47</option>
+            <option value="48">48</option>
+            <option value="49">49</option>
+            <option value="50">50</option>
+            <option value="51">51</option>
+            <option value="52">52</option>
+          </select>
         </p>
 
         <p>
-          <label for="nom">Nom</label><br>
-          <input type="text" id="nom" name="nom" placeholder="Nom de l'élève">
+          <label for="nom">Nom</label>
+          <input type="text" id="nom" name="nom" placeholder="Nom de l'élève" />
         </p>
 
         <p>
-          <label for="prenom">Prénom</label><br>
-          <input type="text" id="prenom" name="prenom" placeholder="Prénom de l'élève">
+          <label for="prenom">Prénom</label>
+          <input type="text" id="prenom" name="prenom" placeholder="Prénom de l'élève" />
         </p>
 
         <p>
-          <label for="date_stage">Date</label><br>
-          <input type="date" id="date_stage" name="date_stage">
+          <label for="date_stage">Date</label>
+          <input type="date" id="date_stage" name="date_stage" />
         </p>
 
         <p>
-          <label for="heure_debut">Heure de début</label><br>
-          <input type="time" id="heure_debut" name="heure_debut">
+          <label for="heure_debut">Heure de début</label>
+          <input type="time" id="heure_debut" name="heure_debut" />
         </p>
 
         <p>
-          <label for="heure_fin">Heure de fin</label><br>
-          <input type="time" id="heure_fin" name="heure_fin">
+          <label for="heure_fin">Heure de fin</label>
+          <input type="time" id="heure_fin" name="heure_fin" />
         </p>
 
         <p class="large">
-          <label for="lieu">Lieu</label><br>
+          <label for="lieu">Lieu</label>
           <select id="lieu" name="lieu">
             <option value="">Choisir un lieu</option>
           </select>
         </p>
 
         <p class="large">
-          <label for="formation">Formation</label><br>
+          <label for="formation">Formation</label>
           <select id="formation" name="formation">
             <option value="">Choisir une formation</option>
           </select>
         </p>
 
         <p class="large">
-          <label for="etat_convention">État de la convention</label><br>
+          <label for="etat_convention">État de la convention</label>
           <select id="etat_convention" name="etat_convention">
-            <option>?</option>
-            <option>Accord famille</option>
-            <option>Conventions distribuées</option>
-            <option>Conventions signées</option>
-            <option>Conventions expédiées</option>
-            <option>Dates bloquées</option>
+            <option value="?">?</option>
+            <option value="Accord famille">Accord famille</option>
+            <option value="Conventions distribuées">Conventions distribuées</option>
+            <option value="Conventions signées">Conventions signées</option>
+            <option value="Conventions expédiées">Conventions expédiées</option>
+            <option value="Dates bloquées">Dates bloquées</option>
           </select>
         </p>
 
         <p class="large">
-          <label for="presence_stage">Présence au stage</label><br>
+          <label for="presence_stage">Présence au stage</label>
           <select id="presence_stage" name="presence_stage">
-            <option>?</option>
-            <option>Absence au stage</option>
-            <option>Présent au stage</option>
-            <option>Stage reprogrammé</option>
+            <option value="?">?</option>
+            <option value="Absence au stage">Absence au stage</option>
+            <option value="Présent au stage">Présent au stage</option>
+            <option value="Stage reprogrammé">Stage reprogrammé</option>
           </select>
         </p>
 
@@ -298,6 +181,8 @@
           <button type="button" onclick="window.location.href='index.html'">Retour à l’accueil</button>
         </div>
       </form>
+
+      <p id="message-saisie" class="info-aide page-form-message"></p>
     </section>
   </main>
 
