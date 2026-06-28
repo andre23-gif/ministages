@@ -929,6 +929,36 @@ async function chargerMiniStagesDansRecap() {
     return
   }
 
+  const ETATS_CONVENTION = [
+    '?',
+    'Accord famille',
+    'Conventions distribuées',
+    'Conventions signées',
+    'Conventions expédiées',
+    'Dates bloquées'
+  ]
+
+  const ETATS_PRESENCE = [
+    '?',
+    'Absence au stage',
+    'Présent au stage',
+    'Stage reprogrammé'
+  ]
+
+  function buildSelect(options, currentValue, stageId, champ) {
+    const opts = options.map(o =>
+      `<option value="${o}" ${o === currentValue ? 'selected' : ''}>${o}</option>`
+    ).join('')
+    return `
+      <select
+        data-id="${stageId}"
+        data-champ="${champ}"
+        onchange="mettreAJourChampStage(this)"
+        style="padding:6px 10px;font-size:0.85rem;border-radius:8px;min-width:160px;"
+      >${opts}</select>
+    `
+  }
+
   tbody.innerHTML = data.map((stage) => {
     const nomClasse = stage.classes?.nom || ''
     const couleurClasse = stage.classes?.couleur || '#64748b'
@@ -947,8 +977,8 @@ async function chargerMiniStagesDansRecap() {
         <td>${horaires}</td>
         <td>${stage.lieux?.nom || ''}</td>
         <td>${stage.formations?.nom || ''}</td>
-        <td>${stage.etat_convention || ''}</td>
-        <td>${stage.presence_stage || ''}</td>
+        <td>${buildSelect(ETATS_CONVENTION, stage.etat_convention || '?', stage.id, 'etat_convention')}</td>
+        <td>${buildSelect(ETATS_PRESENCE, stage.presence_stage || '?', stage.id, 'presence_stage')}</td>
         <td>
           <button
             type="button"
@@ -962,6 +992,36 @@ async function chargerMiniStagesDansRecap() {
     `
   }).join('')
 }
+
+async function mettreAJourChampStage(selectEl) {
+  const id = selectEl.dataset.id
+  const champ = selectEl.dataset.champ
+  const valeur = selectEl.value
+
+  if (!id || !champ) return
+
+  // Feedback visuel immédiat
+  selectEl.style.borderColor = '#93c5fd'
+
+  const { error } = await sb
+    .from('mini_stages')
+    .update({ [champ]: valeur })
+    .eq('id', id)
+
+  if (error) {
+    console.error('Erreur mise à jour :', error.message)
+    selectEl.style.borderColor = '#fca5a5'
+    setTimeout(() => { selectEl.style.borderColor = '' }, 2000)
+    alert('Erreur lors de la sauvegarde : ' + error.message)
+    return
+  }
+
+  // Flash vert = sauvegarde OK
+  selectEl.style.borderColor = '#4ade80'
+  setTimeout(() => { selectEl.style.borderColor = '' }, 1200)
+}
+
+window.mettreAJourChampStage = mettreAJourChampStage
 
 async function supprimerMiniStage(btn) {
   const id = btn.dataset.id
