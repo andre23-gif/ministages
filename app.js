@@ -363,7 +363,7 @@ function getInfosSemaineISO(date = new Date()) {
   }
 }
 
-function afficherSemaineDansRecap() {
+async function afficherSemaineDansRecap() {
   if (currentPageName() !== 'recap.html') return
 
   const info = getInfosSemaineISO(new Date())
@@ -373,13 +373,82 @@ function afficherSemaineDansRecap() {
   const elCourante = document.getElementById('resume-semaine-courante')
   const elSuivante = document.getElementById('resume-semaine-suivante')
 
-  if (elCourante) {
-    elCourante.textContent = `Nous sommes actuellement en semaine ${semaineCourante}.`
+  // Affichage de chargement
+  if (elCourante) elCourante.textContent = 'Chargement…'
+  if (elSuivante) elSuivante.textContent = 'Chargement…'
+
+  // Chargement des stages des deux semaines en une requête
+  const { data, error } = await sb
+    .from('mini_stages')
+    .select(`
+      nom,
+      prenom,
+      semaine,
+      heure_debut,
+      heure_fin,
+      etat_convention,
+      presence_stage,
+      classes ( nom, couleur ),
+      lieux ( nom ),
+      formations ( nom )
+    `)
+    .in('semaine', [semaineCourante, semaineSuivante])
+    .order('semaine')
+    .order('nom')
+
+  function resumeHtml(stages, numSemaine) {
+    if (!stages || !stages.length) {
+      return `<span style="opacity:.7">Semaine ${numSemaine} — aucun stage enregistré.</span>`
+    }
+
+    const lignes = stages.map(s => {
+      const eleve = `${s.nom || ''} ${s.prenom || ''}`.trim()
+      const couleur = s.classes?.couleur || '#64748b'
+      const classe = s.classes?.nom || ''
+      const lieu = s.lieux?.nom || ''
+      const horaires = (s.heure_debut && s.heure_fin)
+        ? `${s.heure_debut}–${s.heure_fin}`
+        : ''
+      const convention = s.etat_convention && s.etat_convention !== '?'
+        ? s.etat_convention
+        : ''
+
+      return `<div style="
+        display:flex;align-items:center;gap:8px;
+        padding:5px 0;border-bottom:1px solid rgba(255,255,255,.15);
+        font-size:.92rem;
+      ">
+        <span style="
+          background:${couleur};color:#fff;border-radius:999px;
+          padding:2px 8px;font-size:.75rem;font-weight:700;white-space:nowrap;flex-shrink:0;
+        ">${classe}</span>
+        <span style="font-weight:600;flex:1">${eleve}</span>
+        ${lieu ? `<span style="opacity:.8;font-size:.85rem">${lieu}</span>` : ''}
+        ${horaires ? `<span style="opacity:.7;font-size:.82rem;white-space:nowrap">${horaires}</span>` : ''}
+        ${convention ? `<span style="opacity:.75;font-size:.8rem">${convention}</span>` : ''}
+      </div>`
+    }).join('')
+
+    return `
+      <div style="font-weight:700;margin-bottom:8px;">
+        Semaine ${numSemaine} — ${stages.length} stage${stages.length > 1 ? 's' : ''}
+      </div>
+      ${lignes}
+    `
   }
 
-  if (elSuivante) {
-    elSuivante.textContent = `La semaine suivante est la semaine ${semaineSuivante}.`
+  if (error) {
+    if (elCourante) elCourante.textContent = 'Impossible de charger les données.'
+    if (elSuivante) elSuivante.textContent = ''
+    console.error('Erreur bandeau semaines :', error.message)
+    return
   }
+
+  const stagesCourants = (data || []).filter(s => s.semaine === semaineCourante)
+  const stagesSuivants = (data || []).filter(s => s.semaine === semaineSuivante)
+
+  if (elCourante) elCourante.innerHTML = resumeHtml(stagesCourants, semaineCourante)
+  if (elSuivante) elSuivante.innerHTML = resumeHtml(stagesSuivants, semaineSuivante)
 }
 
 function preselectionnerSemaineDansSaisie() {
@@ -894,7 +963,7 @@ async function initPage() {
   if (!autorise && isProtectedPage(currentPageName())) return
 
   initialiserCouleursConfig()
-  afficherSemaineDansRecap()
+  await afficherSemaineDansRecap()
   preselectionnerSemaineDansSaisie()
   chargerFormationsDansRecap()
   verifierRechargementFormationsRecap()
