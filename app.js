@@ -889,6 +889,7 @@ async function chargerMiniStagesDansRecap() {
   const { data, error } = await sb
     .from('mini_stages')
     .select(`
+      id,
       nom,
       prenom,
       semaine,
@@ -948,11 +949,51 @@ async function chargerMiniStagesDansRecap() {
         <td>${stage.formations?.nom || ''}</td>
         <td>${stage.etat_convention || ''}</td>
         <td>${stage.presence_stage || ''}</td>
-        <td></td>
+        <td>
+          <button
+            type="button"
+            class="danger"
+            style="padding:7px 14px;font-size:0.82rem;"
+            data-id="${stage.id}"
+            onclick="supprimerMiniStage(this)"
+          >Supprimer</button>
+        </td>
       </tr>
     `
   }).join('')
 }
+
+async function supprimerMiniStage(btn) {
+  const id = btn.dataset.id
+  if (!id) return
+
+  const ok = confirm('Supprimer ce mini-stage ? Cette action est irréversible.')
+  if (!ok) return
+
+  btn.disabled = true
+  btn.textContent = '…'
+
+  const { error } = await sb
+    .from('mini_stages')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    console.error('Erreur suppression :', error.message)
+    btn.disabled = false
+    btn.textContent = 'Supprimer'
+    alert('Erreur lors de la suppression : ' + error.message)
+    return
+  }
+
+  // Retirer la ligne du tableau sans recharger toute la page
+  btn.closest('tr').remove()
+
+  // Rafraîchir le bandeau semaines
+  await afficherSemaineDansRecap()
+}
+
+window.supprimerMiniStage = supprimerMiniStage
 
 /* --------------------------------------------------
    INITIALISATION GLOBALE
