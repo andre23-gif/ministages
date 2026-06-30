@@ -384,6 +384,7 @@ async function afficherSemaineDansRecap() {
       nom,
       prenom,
       semaine,
+      date_stage,
       heure_debut,
       heure_fin,
       etat_convention,
@@ -406,6 +407,8 @@ async function afficherSemaineDansRecap() {
       const couleur = s.classes?.couleur || '#64748b'
       const classe = s.classes?.nom || ''
       const lieu = s.lieux?.nom || ''
+      const formation = s.formations?.nom || ''
+      const date = s.date_stage ? formaterDateFr(s.date_stage) : ''
       const horaires = (s.heure_debut && s.heure_fin)
         ? `${s.heure_debut}–${s.heure_fin}`
         : ''
@@ -414,17 +417,19 @@ async function afficherSemaineDansRecap() {
         : ''
 
       return `<div style="
-        display:flex;align-items:center;gap:8px;
-        padding:5px 0;border-bottom:1px solid rgba(255,255,255,.15);
+        display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+        padding:6px 0;border-bottom:1px solid rgba(255,255,255,.15);
         font-size:.92rem;
       ">
         <span style="
           background:${couleur};color:#fff;border-radius:999px;
           padding:2px 8px;font-size:.75rem;font-weight:700;white-space:nowrap;flex-shrink:0;
         ">${classe}</span>
-        <span style="font-weight:600;flex:1">${eleve}</span>
-        ${lieu ? `<span style="opacity:.8;font-size:.85rem">${lieu}</span>` : ''}
+        <span style="font-weight:600;flex:1;min-width:120px;">${eleve}</span>
+        ${date ? `<span style="opacity:.85;font-size:.82rem;white-space:nowrap">${date}</span>` : ''}
         ${horaires ? `<span style="opacity:.7;font-size:.82rem;white-space:nowrap">${horaires}</span>` : ''}
+        ${lieu ? `<span style="opacity:.8;font-size:.85rem">${lieu}</span>` : ''}
+        ${formation ? `<span style="opacity:.8;font-size:.85rem;font-style:italic">${formation}</span>` : ''}
         ${convention ? `<span style="opacity:.75;font-size:.8rem">${convention}</span>` : ''}
       </div>`
     }).join('')
